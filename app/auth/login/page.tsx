@@ -105,7 +105,7 @@ export default function LoginPage() {
           <div className="flex justify-between text-sm mb-4">
             <span></span>
             <Link
-              href="/forgot-password"
+              href="/lupaPassword"
               className="text-gray-300 hover:underline"
               style={{ fontFamily: "'Baloo', cursive" }}
             >
