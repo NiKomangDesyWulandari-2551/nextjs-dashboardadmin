@@ -16,7 +16,11 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen bg-gradient-to-b from-purple-900 via-red-600 to-orange-500">
+    <div 
+        className="relative flex justify-center items-center min-h-screen"
+        style={{
+            background: "radial-gradient(circle, #F67706 11%, #E6341A 32%, #BC1F28 50%, #831D27 65%, #20063A 100%)",
+        }}>
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Lacquer&family=Baloo&display=swap"
@@ -36,7 +40,7 @@ export default function ForgotPasswordPage() {
           <div className="mb-4">
             <label
               className="block text-sm font-semibold mb-1"
-              style={{ fontFamily: "'Baloo', cursive", fontSize: '19px' }}
+              style={{ fontFamily: "'Baloo', cursive", fontSize: '15px' }}
             >
               Email
             </label>
@@ -52,7 +56,7 @@ export default function ForgotPasswordPage() {
           </div>
 
           <p
-            className="text-sm mb-4"
+            className="text-sm mb-4 "
             style={{ fontFamily: "'Baloo', cursive", color: '#D6EDF5' }}
           >
             Masukkan Email untuk Reset Password
