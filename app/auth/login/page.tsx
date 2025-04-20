@@ -17,7 +17,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     // Simulasi autentikasi sederhana
-    if (email === "aldteam@gmail.com" && password === "12345") {
+    if (email === "admin123" && password === "12345") {
       console.log("Login Berhasil!");
       router.push("/dashboard"); // Redirect ke halaman dashboard
     } else {
