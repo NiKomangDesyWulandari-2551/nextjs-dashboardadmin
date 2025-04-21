@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   let pageTitle = 'Dashboard';
   if (pathname.includes('/dashboard/foods')) {
-    pageTitle = 'FOODS';
+    pageTitle = 'FOODsS';
   } else if (pathname.includes('/dashboard/drinks')) {
     pageTitle = 'DRINKS';
   }else if (pathname.includes('/dashboard/transaksi')) {
