@@ -28,10 +28,12 @@ export default function Page() {
     if (!newTx.id || !newTx.customer || !newTx.product || !newTx.price || !newTx.date) return;
     setTransactions([...transactions, newTx]);
     setNewTx({ id: '', customer: '', product: '', price: '', date: '' });
-    setShowForm(false);  // Menyembunyikan form setelah menambah transaksi
+    setShowForm(false);
   };
 
   const filteredTransactions = transactions.filter((tx) =>
+    tx.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    tx.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tx.product.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -41,20 +43,19 @@ export default function Page() {
         <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap=Baloo&display=swap=Chilanka&display=swap" rel="stylesheet" />
       </Head>
 
-      {/* Tombol Add Transaction dan search hanya muncul jika showForm false */}
       {!showForm && (
         <div className="flex justify-between items-center mb-4 relative -top-10">
           <button
             className="bg-orange-500 text-white px-8 py-2 rounded-full"
             style={{ fontFamily: 'Lacquer, cursive', fontSize: '23px' }}
-            onClick={() => setShowForm(true)} // Menampilkan form
+            onClick={() => setShowForm(true)}
           >
             + Add Transaction
           </button>
           <div className="relative">
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Search ID Transaction..."
               className="pl-10 pr-4 py-2 rounded-full w-80 bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-800"
               style={{ fontFamily: 'Chilanka, cursive' }}
               value={searchQuery}
@@ -65,7 +66,6 @@ export default function Page() {
         </div>
       )}
 
-      {/* Tabel hanya ditampilkan jika showForm false */}
       {!showForm && (
         <div className="overflow-x-auto bg-[#374253] bg-opacity-10 backdrop-blur-lg rounded-xl p-4 shadow-lg text-white">
           <table className="min-w-full text-center">
@@ -102,7 +102,6 @@ export default function Page() {
         </div>
       )}
 
-      {/* Form tambah transaksi muncul jika showForm true */}
       {showForm && (
         <div className="mt-6 bg-gray-700 p-4 rounded-lg text-white">
           <h2 className="text-xl font-bold mb-2" style={{ fontFamily: 'Baloo, cursive' }}>Add New Transaction</h2>
