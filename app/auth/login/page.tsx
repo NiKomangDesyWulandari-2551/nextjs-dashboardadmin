@@ -9,7 +9,7 @@ import Head from "next/head";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -17,7 +17,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     // Simulasi autentikasi sederhana
-    if (email === "admin123" && password === "12345") {
+    if (username === "admin123" && password === "12345") {
       console.log("Login Berhasil!");
       router.push("/dashboard"); // Redirect ke halaman dashboard
     } else {
@@ -57,20 +57,20 @@ export default function LoginPage() {
 
         {/* Form Login */}
         <form onSubmit={handleLogin}>
-          {/* Email Input */}
+          {/* Username input */}
           <div className="mb-4">
             <label
               className="block text-sm font-semibold"
               style={{ fontFamily: "'Baloo', cursive", color: "#D6EDF5", fontSize: '19px'}}
             >
-              Email
+              Username
             </label>
             <input
-              type="email"
-              placeholder="Masukkan Email..."
+              type="text"
+              placeholder="Masukkan Username..."
               className="w-full mt-1 p-3 rounded bg-[#ECF0F1] text-black border border-gray-600"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               style={{ fontFamily: "'Baloo', cursive", color: '#605B5B', fontSize: '15px' }}
             />

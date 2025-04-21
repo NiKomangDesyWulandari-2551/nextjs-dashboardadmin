@@ -1,31 +1,21 @@
 'use client';
-import { FaUtensils, FaCocktail } from "react-icons/fa";
-
-// import {
-//   UserGroupIcon,
-//   HomeIcon,
-//   DocumentDuplicateIcon,
-// } from '@heroicons/react/24/outline';
+import { FaUtensils, FaCocktail, FaMoneyBillWave } from "react-icons/fa";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
-
-// Map of links to display in the side navigation.
-// Depending on the size of the application, this would be stored in a database.
 const links = [
   { href: "/dashboard/foods", icon: FaUtensils },
   { href: "/dashboard/drinks", icon: FaCocktail },
+  { href: "/dashboard/transactions", icon: FaMoneyBillWave }, // <--- ini dia tambahan ikon uang
 ];
-
 
 export default function NavLinks() {
   const pathname = usePathname();
   return (
     <>
       {links.map((link) => {
-        const LinkIcon = link.icon; // Ambil ikon dari array
-
+        const LinkIcon = link.icon;
         return (
           <Link
             key={link.href}
@@ -37,7 +27,7 @@ export default function NavLinks() {
               }
             )}
           >
-            <LinkIcon className="w-5 h-5" /> {/* Gunakan ikon di sini */}
+            <LinkIcon className="w-5 h-5" />
           </Link>
         );
       })}
