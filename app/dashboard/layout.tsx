@@ -12,6 +12,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     pageTitle = 'FOODS';
   } else if (pathname.includes('/dashboard/drinks')) {
     pageTitle = 'DRINKS';
+  }else if (pathname.includes('/dashboard/transaksi')) {
+    pageTitle = 'TRANSACTION';
   }
 
   return (

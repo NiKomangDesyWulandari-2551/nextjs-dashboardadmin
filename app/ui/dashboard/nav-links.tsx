@@ -7,7 +7,7 @@ import clsx from 'clsx';
 const links = [
   { href: "/dashboard/foods", icon: FaUtensils },
   { href: "/dashboard/drinks", icon: FaCocktail },
-  { href: "/dashboard/transactions", icon: FaMoneyBillWave }, // <--- ini dia tambahan ikon uang
+  { href: "/dashboard/transaksi", icon: FaMoneyBillWave }, // <--- ini dia tambahan ikon uang
 ];
 
 export default function NavLinks() {
