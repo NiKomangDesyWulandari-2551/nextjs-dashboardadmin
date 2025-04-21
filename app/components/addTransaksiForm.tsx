@@ -1,49 +1,170 @@
-import React from 'react';
+'use client';
 
-type AddTransactionFormProps = {
+import { useState } from 'react';
+
+interface AddTransactionFormProps {
   onCancel: () => void;
-};
+  onSave: (newTransaction: {
+    transactionId: string;
+    product: string;
+    unitPrice: number;
+    purchaseAmount: number;
+    totalPrice: number;
+    customers: string;
+    date: string;
+  }) => void;
+}
 
-function AddTransactionForm({ onCancel }: AddTransactionFormProps) {
+export default function AddTransactionForm({ onCancel, onSave }: AddTransactionFormProps) {
+  const [transactionId, setTransactionId] = useState('');
+  const [product, setProduct] = useState('');
+  const [unitPrice, setUnitPrice] = useState('');
+  const [purchaseAmount, setPurchaseAmount] = useState('');
+  const [totalPrice, setTotalPrice] = useState('');
+  const [customers, setCustomers] = useState('');
+  const [date, setDate] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      !transactionId ||
+      !product ||
+      !unitPrice ||
+      !purchaseAmount ||
+      !totalPrice ||
+      !customers ||
+      !date
+    )
+      return;
+    onSave({
+      transactionId,
+      product,
+      unitPrice: Number(unitPrice),
+      purchaseAmount: Number(purchaseAmount),
+      totalPrice: Number(totalPrice),
+      customers,
+      date,
+    });
+    onCancel(); // Close the form after saving
+  };
+
   return (
-    <div className="p-8 bg-[#374253] bg-opacity-50 backdrop-blur-lg rounded-lg shadow-lg">
-      <h1 className="text-4xl font-bold text-center mb-8 text-cyan-400">DETAILS</h1>
-
-      <div className="space-y-6">
-        {/* Form Group */}
-        {[
-          { label: 'Transaction Id', placeholder: 'TR0000001' },
-          { label: 'Product', placeholder: '' },
-          { label: 'Unit Price', placeholder: 'Rp 00.00' },
-          { label: 'Purchase Amount', placeholder: 'add purchase amount here...' },
-          { label: 'Total Price', placeholder: 'Rp 00.00' },
-          { label: 'Customers', placeholder: 'add customer name here...' },
-          { label: 'Date', placeholder: 'yyyy/mm/dd' },
-        ].map((field, i) => (
-          <div className="flex items-center gap-6" key={i}>
-            <label className="w-48 text-[#8FAFBC] font-semibold text-lg">{field.label}</label>
-            <span className="text-[#8FAFBC] text-lg">:</span>
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+      <div className="relative bg-dark-secondary p-8 rounded-lg shadow-lg w-full max-w-md">
+        {/* Background Image Overlay */}
+        <div
+          className="absolute inset-0 bg-halloween-pattern opacity-70 rounded-lg pointer-events-none"
+          style={{
+            backgroundImage: 'url("/images/halloween-bg.png")', // Asumsi ada gambar background
+            backgroundSize: 'cover',
+            backgroundRepeat: 'repeat',
+          }}
+        />
+        <h2 className="text-xl font-bold text-white mb-6 relative z-10 text-center" style={{ fontFamily: 'Creepster', fontSize: '2rem' }}>
+          TRANSACTION <span className="text-lime-400">DETAILS</span>
+        </h2>
+        <form onSubmit={handleSubmit} className="relative z-10">
+          <div className="mb-4">
+            <label htmlFor="transactionId" className="block text-gray-300 text-sm font-bold mb-2">
+              Transaction Id
+            </label>
             <input
-              placeholder={field.placeholder}
-              className="flex-1 px-4 py-2 rounded-md bg-[#1a1e26] text-white focus:outline-none"
+              type="text"
+              id="transactionId"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-dark-input"
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
             />
           </div>
-        ))}
-      </div>
-
-      <div className="flex justify-end gap-4 mt-10">
-        <button
-          onClick={onCancel}
-          className="bg-[#BA1B1D] hover:bg-red-700 text-white px-6 py-2 rounded-md font-semibold"
-        >
-          Cancel
-        </button>
-        <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md font-semibold">
-          Save
-        </button>
+          <div className="mb-4">
+            <label htmlFor="product" className="block text-gray-300 text-sm font-bold mb-2">
+              Product
+            </label>
+            <input
+              type="text"
+              id="product"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-dark-input"
+              value={product}
+              onChange={(e) => setProduct(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="unitPrice" className="block text-gray-300 text-sm font-bold mb-2">
+              Unit Price
+            </label>
+            <input
+              type="number"
+              id="unitPrice"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-dark-input"
+              value={unitPrice}
+              onChange={(e) => setUnitPrice(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="purchaseAmount" className="block text-gray-300 text-sm font-bold mb-2">
+              Purchase Amount
+            </label>
+            <input
+              type="number"
+              id="purchaseAmount"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-dark-input"
+              value={purchaseAmount}
+              onChange={(e) => setPurchaseAmount(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="totalPrice" className="block text-gray-300 text-sm font-bold mb-2">
+              Total Price
+            </label>
+            <input
+              type="number"
+              id="totalPrice"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-dark-input"
+              value={totalPrice}
+              onChange={(e) => setTotalPrice(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="customers" className="block text-gray-300 text-sm font-bold mb-2">
+              Customers
+            </label>
+            <input
+              type="text"
+              id="customers"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-dark-input"
+              value={customers}
+              onChange={(e) => setCustomers(e.target.value)}
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="date" className="block text-gray-300 text-sm font-bold mb-2">
+              Date
+            </label>
+            <input
+              type="date"
+              id="date"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-dark-input"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 focus:outline-none focus:shadow-outline"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-lime-500 text-white rounded hover:bg-lime-600 focus:outline-none focus:shadow-outline"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
 }
-
-export default AddTransactionForm;
