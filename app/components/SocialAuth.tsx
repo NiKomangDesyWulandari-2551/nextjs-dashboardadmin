@@ -17,10 +17,10 @@ const SocialAuth = () => {
         });
 
 
-        // Simulasi login sosial, langsung redirect ke dashboard
+        
         setTimeout(() => {
             router.push("/dashboard");
-        }, 1000); // Tunggu sebentar agar toast muncul dulu
+        }, 1000); 
     };
 
 

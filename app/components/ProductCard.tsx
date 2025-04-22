@@ -6,8 +6,8 @@ interface ProductCardProps {
   image: string;
   name: string;
   price: number;
-  onEdit: () => void;    // Fungsi untuk Edit
-  onDelete: () => void;  // Fungsi untuk Delete
+  onEdit: () => void;   
+  onDelete: () => void;  
 }
 
 export default function ProductCard({

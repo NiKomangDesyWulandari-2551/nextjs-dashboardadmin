@@ -20,7 +20,7 @@ export default function AddProductForm({ onCancel, onAddProduct }: AddProductFor
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // ✅ Validasi ekstensi file
+    
     const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
     if (!validExtensions.includes(file.type)) {
       setErrorMessage('Only JPG, JPEG, and PNG files are allowed.');
@@ -29,7 +29,7 @@ export default function AddProductForm({ onCancel, onAddProduct }: AddProductFor
 
     setImage(file);
     setPreview(URL.createObjectURL(file));
-    setErrorMessage(null); // Hapus error jika sudah benar
+    setErrorMessage(null); 
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,7 +48,7 @@ export default function AddProductForm({ onCancel, onAddProduct }: AddProductFor
     onAddProduct({
       name,
       price: Number(price),
-      image: preview || "", // Gunakan preview sebagai src
+      image: preview || "",
     });
 
     // Reset form

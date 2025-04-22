@@ -15,17 +15,12 @@ const Dashboard: React.FC<DashboardProps> = ({ soulCount, recentCount, banquetPr
       
       {/* Grid Container */}
       <div className="grid grid-cols-2 gap-6 w-full max-w-4xl mt-0 absolute top-0">
-        {/* SoulCounter (Kiri Atas) */}
         <div className="flex justify-end" style={{ width: '325px', height: '195px' }}>
           <SoulCounter count={soulCount} className="w-full h-full flex justify-center items-center" />
         </div>
-
-        {/* Recently Collected Souls (Kanan Atas) */}
         <div className="flex justify-start" style={{ width: '325px', height: '195px' }}>
           <RecentSouls count={recentCount} className="w-full h-full flex justify-center items-center" />
         </div>
-
-        {/* BanquetProgress (Sejajar dengan SoulCounter) */}
         <div className="flex justify-end" style={{ width: '325px', height: '195px' }}>
           <BanquetProgress progress={banquetProgress} className="w-full h-full flex justify-center items-center" />
         </div>

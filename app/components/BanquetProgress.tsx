@@ -14,15 +14,15 @@ const BanquetProgress: React.FC<BanquetProgressProps> = ({ progress }) => {
         textAlign: 'center', 
         padding: '25px', 
         backgroundColor: 'rgba(0, 0, 0, 0.6)', 
-        border: '2px solid rgba(173, 216, 230, 0.8)', // Border lebih redup
+        border: '2px solid rgba(173, 216, 230, 0.8)', 
         borderRadius: '20px',
         margin: '10px',
-        minWidth: '325px', // Menyesuaikan panjang kotak dengan desain
+        minWidth: '325px', 
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center',
-        gap: '8px', // Menyesuaikan jarak antar elemen
-        boxShadow: '0 3px 10px rgba(0, 0, 0, 0.5)' // Efek bayangan lebih lembut 
+        gap: '8px', 
+        boxShadow: '0 3px 10px rgba(0, 0, 0, 0.5)'
     }}>
       {/* Import Google Font */}
       <Head>

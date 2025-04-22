@@ -19,7 +19,7 @@ export default function LoginPage() {
     // Simulasi autentikasi sederhana
     if (username === "admin123" && password === "12345") {
       console.log("Login Berhasil!");
-      router.push("/dashboard"); // Redirect ke halaman dashboard
+      router.push("/dashboard"); 
     } else {
       alert("Email atau password salah!");
     }
