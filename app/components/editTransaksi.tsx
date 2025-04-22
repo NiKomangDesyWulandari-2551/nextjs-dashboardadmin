@@ -1,28 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 
-interface AddTransactionFormProps {
-  onCancel: () => void;
-  onSave: (newTransaction: {
+interface EditTransactionFormProps {
+  transaction: {
     transactionId: string;
     product: string;
     unitPrice: number;
-    purchaseAmount: number;
-    totalPrice: number;
-    customers: string;
-    date: string;
-  }) => void;
-  initialData?: {
-    transactionId: string;
-    product: string;
-    unitPrice: number;
-    purchaseAmount: number;
-    totalPrice: number;
     customers: string;
     date: string;
   };
+  onCancel: () => void;
+  onSave: (updatedData: {
+    transactionId: string;
+    product: string;
+    unitPrice: number;
+    customers: string;
+    date: string;
+  }) => void;
 }
 
 const productOptions = [
@@ -31,100 +27,50 @@ const productOptions = [
   { name: 'Ghost Fries', price: 15000 },
 ];
 
-const existingTransactions = [
-  { transactionId: 'TR00000001' },
-  { transactionId: 'TR00000002' },
-  { transactionId: 'TR00000003' },
-  { transactionId: 'TR00000004' },
-  { transactionId: 'TR00000005' },
-];
-
-const generateTransactionId = () => {
-  const lastTransaction = existingTransactions[existingTransactions.length - 1];
-  const lastNumber = parseInt(lastTransaction.transactionId.substring(2));
-  const nextTransactionId = lastNumber + 1;
-  return `TR${String(nextTransactionId).padStart(8, '0')}`;
-};
-
-export default function AddTransactionForm({ onCancel, onSave, initialData }: AddTransactionFormProps) {
-  const [transactionId, setTransactionId] = useState('');
-  const [product, setProduct] = useState('');
-  const [unitPrice, setUnitPrice] = useState('');
-  const [purchaseAmount, setPurchaseAmount] = useState('');
-  const [totalPrice, setTotalPrice] = useState('');
-  const [customers, setCustomers] = useState('');
-  const [date, setDate] = useState('');
+export default function EditTransactionForm({
+  transaction,
+  onCancel,
+  onSave,
+}: EditTransactionFormProps) {
+  const [transactionId, setTransactionId] = useState(transaction.transactionId);
+  const [product, setProduct] = useState(transaction.product);
+  const [unitPrice, setUnitPrice] = useState(transaction.unitPrice);
+  const [customers, setCustomers] = useState(transaction.customers);
+  const [date, setDate] = useState(transaction.date);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (initialData) {
-      setTransactionId(initialData.transactionId);
-      setProduct(initialData.product);
-      setUnitPrice(initialData.unitPrice.toString());
-      setPurchaseAmount(initialData.purchaseAmount.toString());
-      setTotalPrice(initialData.totalPrice.toString());
-      setCustomers(initialData.customers);
-      setDate(initialData.date);
-    } else {
-      setTransactionId(generateTransactionId());
-    }
-  }, [initialData]);
+    setTransactionId(transaction.transactionId);
+    setProduct(transaction.product);
+    setUnitPrice(transaction.unitPrice);
+    setCustomers(transaction.customers);
+    setDate(transaction.date);
+  }, [transaction]);
 
   const handleProductChange = (value: string) => {
     setProduct(value);
     const selected = productOptions.find((p) => p.name === value);
     if (selected) {
-      setUnitPrice(selected.price.toString());
-      if (purchaseAmount) {
-        const total = selected.price * Number(purchaseAmount);
-        setTotalPrice(total.toString());
-      }
-    }
-  };
-
-  const handleAmountChange = (value: string) => {
-    setPurchaseAmount(value);
-    if (unitPrice) {
-      const total = Number(unitPrice) * Number(value);
-      setTotalPrice(total.toString());
+      setUnitPrice(selected.price);
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!transactionId || !product || !unitPrice || !purchaseAmount || !totalPrice || !customers || !date) {
+    if (!product || !unitPrice || !customers || !date) {
       setErrorMessage('Please fill all fields!');
-      return;
-    }
-
-    if (Number(unitPrice) <= 0 || Number(purchaseAmount) <= 0 || Number(totalPrice) <= 0) {
-      setErrorMessage('Values must be greater than 0.');
       return;
     }
 
     onSave({
       transactionId,
       product,
-      unitPrice: Number(unitPrice),
-      purchaseAmount: Number(purchaseAmount),
-      totalPrice: Number(totalPrice),
+      unitPrice,
       customers,
       date,
     });
 
-    if (!initialData) {
-      // Reset hanya jika tambah baru
-      setTransactionId(generateTransactionId());
-      setProduct('');
-      setUnitPrice('');
-      setPurchaseAmount('');
-      setTotalPrice('');
-      setCustomers('');
-      setDate('');
-    }
-
     setErrorMessage(null);
-    onCancel();
   };
 
   return (
@@ -140,7 +86,7 @@ export default function AddTransactionForm({ onCancel, onSave, initialData }: Ad
         style={{ maxHeight: '90vh' }}
       >
         <h3 className="text-[40px] text-center mb-6" style={{ fontFamily: 'Lacquer', color: '#13B5EE' }}>
-          DETAILS
+          EDIT DETAILS
         </h3>
 
         {errorMessage && <p className="text-red-400 text-center mb-4">{errorMessage}</p>}
@@ -162,9 +108,7 @@ export default function AddTransactionForm({ onCancel, onSave, initialData }: Ad
               value={product}
               onChange={(e) => handleProductChange(e.target.value)}
               className="flex-1 p-2 rounded-full bg-gray-800 text-white"
-              style={{ color: product === '' ? '#B7D2E2' : 'inherit' }}
             >
-              <option value="">Select a product</option>
               {productOptions.map((p) => (
                 <option key={p.name} value={p.name}>
                   {p.name}
@@ -177,31 +121,8 @@ export default function AddTransactionForm({ onCancel, onSave, initialData }: Ad
             <label className="w-[140px] text-right text-[#B7D2E2]">Unit Price:</label>
             <input
               type="text"
-              placeholder='Rp 00.00'
               className="flex-1 p-2 rounded-full bg-gray-800 text-white"
               value={unitPrice}
-              readOnly
-            />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <label className="w-[140px] text-right text-[#B7D2E2]">Purchase Amount:</label>
-            <input
-              type="number"
-              placeholder='Amount...'
-              className="flex-1 p-2 rounded-full bg-gray-800 text-white"
-              value={purchaseAmount}
-              onChange={(e) => handleAmountChange(e.target.value)}
-            />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <label className="w-[140px] text-right text-[#B7D2E2]">Total Price:</label>
-            <input
-              type="text"
-              placeholder='Rp 00.00'
-              className="flex-1 p-2 rounded-full bg-gray-800 text-white"
-              value={totalPrice}
               readOnly
             />
           </div>
@@ -210,7 +131,6 @@ export default function AddTransactionForm({ onCancel, onSave, initialData }: Ad
             <label className="w-[140px] text-right text-[#B7D2E2]">Customers:</label>
             <input
               type="text"
-              placeholder='Customer name...'
               className="flex-1 p-2 rounded-full bg-gray-800 text-white"
               value={customers}
               onChange={(e) => setCustomers(e.target.value)}
