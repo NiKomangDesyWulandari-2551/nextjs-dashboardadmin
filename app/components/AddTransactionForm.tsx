@@ -16,6 +16,12 @@ interface AddTransactionFormProps {
   }) => void;
 }
 
+const productOptions = [
+  { name: "Pumpkin Latte", price: 25000 },
+  { name: "Spooky Burger", price: 40000 },
+  { name: "Ghost Fries", price: 15000 },
+];
+
 export default function AddTransactionForm({ onCancel, onSave }: AddTransactionFormProps) {
   const [transactionId, setTransactionId] = useState('');
   const [product, setProduct] = useState('');
@@ -26,17 +32,30 @@ export default function AddTransactionForm({ onCancel, onSave }: AddTransactionF
   const [date, setDate] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const handleProductChange = (value: string) => {
+    setProduct(value);
+    const selected = productOptions.find(p => p.name === value);
+    if (selected) {
+      setUnitPrice(selected.price.toString());
+      // Hitung ulang total jika quantity sudah diisi
+      if (purchaseAmount) {
+        const total = selected.price * Number(purchaseAmount);
+        setTotalPrice(total.toString());
+      }
+    }
+  };
+
+  const handleAmountChange = (value: string) => {
+    setPurchaseAmount(value);
+    if (unitPrice) {
+      const total = Number(unitPrice) * Number(value);
+      setTotalPrice(total.toString());
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      !transactionId.trim() ||
-      !product.trim() ||
-      !unitPrice.trim() ||
-      !purchaseAmount.trim() ||
-      !totalPrice.trim() ||
-      !customers.trim() ||
-      !date.trim()
-    ) {
+    if (!transactionId || !product || !unitPrice || !purchaseAmount || !totalPrice || !customers || !date) {
       setErrorMessage("Please fill all fields!");
       return;
     }
@@ -56,60 +75,123 @@ export default function AddTransactionForm({ onCancel, onSave }: AddTransactionF
       date,
     });
 
-    // Reset form
-    setTransactionId("");
-    setProduct("");
-    setUnitPrice("");
-    setPurchaseAmount("");
-    setTotalPrice("");
-    setCustomers("");
-    setDate("");
+    // Reset
+    setTransactionId('');
+    setProduct('');
+    setUnitPrice('');
+    setPurchaseAmount('');
+    setTotalPrice('');
+    setCustomers('');
+    setDate('');
     setErrorMessage(null);
     onCancel();
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black bg-opacity-0 fixed inset-0">
+    <div className="flex items-center justify-center min-h-screen bg-black bg-opacity-30 fixed inset-0">
       <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap=Baloo&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Chilanka&display=swap" rel="stylesheet" />
       </Head>
       <form
-        className="relative bg-gray-800 bg-opacity-80 p-8 rounded-3xl shadow-lg w-full max-w-2xl text-white flex flex-col items-center "
+        className="relative bg-gray-800 bg-opacity-80 px-6 py-16 rounded-3xl shadow-lg w-full max-w-3xl min-h-[400px] text-white"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-[55px] font-bold text-center mb-6" style={{ fontFamily: 'Lacquer', color: '#13B5EE' }}>
-          TRANSACTION DETAILS
+        <h2
+          className="text-[45px] font-bold text-center mb-8"
+          style={{ fontFamily: 'Lacquer', color: '#13B5EE' }}
+        >
+          <br /> <span style={{ fontSize: 28 }}>DETAILS</span>
         </h2>
 
         {errorMessage && (
           <p className="text-red-400 text-center mb-4">{errorMessage}</p>
         )}
 
-        {[ // Menyesuaikan ukuran field seperti AddProductForm
-          { label: 'Transaction ID', value: transactionId, setValue: setTransactionId, placeholder: 'TR00000001' },
-          { label: 'Product', value: product, setValue: setProduct, placeholder: 'Enter product name' },
-          { label: 'Unit Price', value: unitPrice, setValue: setUnitPrice, placeholder: 'Rp 00.00' },
-          { label: 'Purchase Amount', value: purchaseAmount, setValue: setPurchaseAmount, placeholder: 'Enter quantity' },
-          { label: 'Total Price', value: totalPrice, setValue: setTotalPrice, placeholder: 'Rp 00.00' },
-          { label: 'Customers', value: customers, setValue: setCustomers, placeholder: 'Enter customer name' },
-          { label: 'Date', value: date, setValue: setDate, placeholder: 'yyyy/mm/dd' },
-        ].map(({ label, value, setValue, placeholder }) => (
-          <div key={label} className="w-full" style={{ fontFamily: 'Chilanka', color: '#8FAFBC', fontSize: '15px' }}>
-            <label className="block text-sm mb-1">{label}:</label>
+        <div className="space-y-4 text-[15px]" style={{ fontFamily: 'Chilanka' }}>
+          <div className="flex items-center gap-4">
+            <label className="w-[150px] text-right text-[#B7D2E2]">Transaction Id :</label>
             <input
               type="text"
-              className="w-full p-3 rounded-full bg-gray-900 text-white"
-              placeholder={placeholder}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
+              placeholder="TR00000001"
+              className="flex-1 p-2 rounded-full bg-gray-900 text-white"
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
             />
           </div>
-        ))}
 
-        <div className="flex justify-center gap-10 mt-6">
+          <div className="flex items-center gap-4">
+            <label className="w-[150px] text-right text-[#B7D2E2]">Product :</label>
+            <select
+              value={product}
+              onChange={(e) => handleProductChange(e.target.value)}
+              className="flex-1 p-2 rounded-full bg-gray-900 text-white"
+            >
+              <option value="">Select a product</option>
+              {productOptions.map((p) => (
+                <option key={p.name} value={p.name}>{p.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-[150px] text-right text-[#B7D2E2]">Unit Price :</label>
+            <input
+              type="text"
+              placeholder="Rp 00.00"
+              className="flex-1 p-2 rounded-full bg-gray-900 text-white"
+              value={unitPrice}
+              onChange={(e) => setUnitPrice(e.target.value)}
+              readOnly
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-[150px] text-right text-[#B7D2E2]">Purchase Amount :</label>
+            <input
+              type="number"
+              placeholder="Amount..."
+              className="flex-1 p-2 rounded-full bg-gray-900 text-white"
+              value={purchaseAmount}
+              onChange={(e) => handleAmountChange(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-[150px] text-right text-[#B7D2E2]">Total Price :</label>
+            <input
+              type="text"
+              placeholder="Rp 00.00"
+              className="flex-1 p-2 rounded-full bg-gray-900 text-white"
+              value={totalPrice}
+              onChange={(e) => setTotalPrice(e.target.value)}
+              readOnly
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-[150px] text-right text-[#B7D2E2]">Customers :</label>
+            <input
+              type="text"
+              placeholder="Customer name..."
+              className="flex-1 p-2 rounded-full bg-gray-900 text-white"
+              value={customers}
+              onChange={(e) => setCustomers(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <label className="w-[150px] text-right text-[#B7D2E2]">Date :</label>
+            <input
+              type="date"
+              className="flex-1 p-2 rounded-full bg-gray-900 text-white"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-8 mt-8">
           <button
             type="button"
             className="bg-gray-500 px-6 py-2 rounded-lg text-white hover:bg-gray-600"

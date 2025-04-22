@@ -3,33 +3,31 @@
 import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import Head from 'next/head';
-import AddTransactionForm from '@/app/components/AddTransactionForm'; // Pastikan file ini ada dan benar
+import AddTransactionForm from '@/app/components/AddTransactionForm';
 
 interface Transaction {
   transactionId: string;
   product: string;
   unitPrice: number;
-  purchaseAmount: number;
-  totalPrice: number;
   customers: string;
   date: string;
 }
 
 export default function Page() {
-  const [showForm, setShowForm] = useState(false); // Mengontrol tampilan form
+  const [showForm, setShowForm] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const [transactions, setTransactions] = useState<Transaction[]>([
-    { transactionId: 'TR0000001', customers: 'Phuwin', product: 'Bloody Vision', unitPrice: 60000, purchaseAmount: 1, totalPrice: 60000, date: '2025/03/28' },
-    { transactionId: 'TR0000002', customers: 'Desy', product: 'Bloody Elixir', unitPrice: 60000, purchaseAmount: 1, totalPrice: 60000, date: '2025/03/29' },
-    { transactionId: 'TR0000003', customers: 'Luna', product: "Witch's Fingers", unitPrice: 30000, purchaseAmount: 1, totalPrice: 30000, date: '2025/03/30' },
-    { transactionId: 'TR0000004', customers: 'Audrey', product: "Ghoul's Delight Pasta", unitPrice: 30000, purchaseAmount: 1, totalPrice: 30000, date: '2025/03/31' },
-    { transactionId: 'TR0000005', customers: 'Pond', product: "Ghoul's Delight Pasta", unitPrice: 50000, purchaseAmount: 1, totalPrice: 50000, date: '2025/03/31' },
+    { transactionId: 'TR0000001', customers: 'Phuwin', product: 'Bloody Vision', unitPrice: 60000, date: '2025/03/28' },
+    { transactionId: 'TR0000002', customers: 'Desy', product: 'Bloody Elixir', unitPrice: 60000, date: '2025/03/29' },
+    { transactionId: 'TR0000003', customers: 'Luna', product: "Witch's Fingers", unitPrice: 30000, date: '2025/03/30' },
+    { transactionId: 'TR0000004', customers: 'Audrey', product: "Ghoul's Delight Pasta", unitPrice: 30000, date: '2025/03/31' },
+    { transactionId: 'TR0000005', customers: 'Pond', product: "Ghoul's Delight Pasta", unitPrice: 50000, date: '2025/03/31' },
   ]);
 
   const handleAddTransaction = (newTransaction: Transaction) => {
-    setTransactions([...transactions, newTransaction]); // Tambahkan transaksi baru ke daftar
-    setShowForm(false); // Tutup form setelah menyimpan
+    setTransactions([...transactions, newTransaction]);
+    setShowForm(false);
   };
 
   const filteredTransactions = transactions.filter((tx) =>
@@ -37,6 +35,13 @@ export default function Page() {
     tx.customers.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tx.product.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleDelete = (transactionId: string) => {
+    const confirmDelete = confirm(`Are you sure you want to delete ${transactionId}?`);
+    if (confirmDelete) {
+      setTransactions(transactions.filter((tx) => tx.transactionId !== transactionId));
+    }
+  };
 
   return (
     <div className="p-6 relative">
@@ -49,7 +54,7 @@ export default function Page() {
           <button
             className="bg-orange-500 text-white px-8 py-2 rounded-full"
             style={{ fontFamily: 'Lacquer, cursive', fontSize: '23px' }}
-            onClick={() => setShowForm(true)} // Aktifkan form tambah transaksi
+            onClick={() => setShowForm(true)}
           >
             + Add Transaction
           </button>
@@ -69,8 +74,8 @@ export default function Page() {
 
       {showForm ? (
         <AddTransactionForm
-          onCancel={() => setShowForm(false)} // Fungsi untuk menutup form
-          onSave={handleAddTransaction} // Simpan transaksi baru
+          onCancel={() => setShowForm(false)}
+          onSave={handleAddTransaction}
         />
       ) : (
         <div className="overflow-x-auto bg-[#374253] bg-opacity-10 backdrop-blur-lg rounded-xl p-4 shadow-lg text-white">
@@ -81,10 +86,9 @@ export default function Page() {
                 <th style={{ fontFamily: 'Baloo, cursive' }}>Transaction Id</th>
                 <th style={{ fontFamily: 'Baloo, cursive' }}>Customer</th>
                 <th style={{ fontFamily: 'Baloo, cursive' }}>Product</th>
-                <th style={{ fontFamily: 'Baloo, cursive' }}>Unit Price</th>
-                <th style={{ fontFamily: 'Baloo, cursive' }}>Purchase Amount</th>
-                <th style={{ fontFamily: 'Baloo, cursive' }}>Total Price</th>
+                <th style={{ fontFamily: 'Baloo, cursive' }}>Price</th>
                 <th style={{ fontFamily: 'Baloo, cursive' }}>Date</th>
+                <th style={{ fontFamily: 'Baloo, cursive' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -94,10 +98,22 @@ export default function Page() {
                   <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>{tx.transactionId}</td>
                   <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>{tx.customers}</td>
                   <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>{tx.product}</td>
-                  <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>{tx.unitPrice}</td>
-                  <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>{tx.purchaseAmount}</td>
-                  <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>{tx.totalPrice}</td>
+                  <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>Rp.{tx.unitPrice}</td>
                   <td className="text-[#8FAFBC]" style={{ fontFamily: 'Chilanka, cursive' }}>{tx.date}</td>
+                  <td className="text-[#8FAFBC] space-x-2 py-2" style={{ fontFamily: 'Chilanka, cursive' }}>
+                    <button
+                      className="bg-green-500 hover:bg-green-600 px-3 py-1 rounded-full text-sm text-white"
+                      onClick={() => alert(`Edit ${tx.transactionId}`)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-full text-sm text-white"
+                      onClick={() => handleDelete(tx.transactionId)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
