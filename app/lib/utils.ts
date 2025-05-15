@@ -1,56 +1,62 @@
 import { Revenue } from './definitions';
 
-export const formatCurrency = (amount: number | bigint | null): string => {
-  const value = Number(amount ?? 0); // Konversi ke number, gunakan 0 jika null
-  return value.toLocaleString('id-ID', {
+export const formatCurrency = (amount: number) => {
+  return (amount / 100).toLocaleString('en-US', {
     style: 'currency',
-    currency: 'IDR',
+    currency: 'USD',
   });
 };
 
-export const formatWeekToLocal = (weekStr: string, locale: string = 'id-ID') => {
-  // Langsung kembalikan string week karena formatnya sudah deskriptif
-  // Misalnya: "Week 1 (15-21 Apr)"
-  return weekStr;
+export const formatDateToLocal = (
+  dateStr: string,
+  locale: string = 'en-US',
+) => {
+  const date = new Date(dateStr);
+  const options: Intl.DateTimeFormatOptions = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  };
+  const formatter = new Intl.DateTimeFormat(locale, options);
+  return formatter.format(date);
 };
 
-
 export const generateYAxis = (revenue: Revenue[]) => {
-  // Hitung label untuk sumbu Y berdasarkan revenue tertinggi, dalam jutaan
+  // Calculate what labels we need to display on the y-axis
+  // based on highest record and in 1000s
   const yAxisLabels = [];
-  const highestRecord = Math.max(...revenue.map((sale) => sale.revenue));
-  const topLabel = Math.ceil(highestRecord / 1000000) * 1000000; // Bulatkan ke jutaan
+  const highestRecord = Math.max(...revenue.map((month) => month.revenue));
+  const topLabel = Math.ceil(highestRecord / 1000) * 1000;
 
-
-  for (let i = topLabel; i >= 0; i -= 1000000) {
-    yAxisLabels.push(`Rp ${i / 1000000}M`);
+  for (let i = topLabel; i >= 0; i -= 1000) {
+    yAxisLabels.push(`$${i / 1000}K`);
   }
-
 
   return { yAxisLabels, topLabel };
 };
 
-
 export const generatePagination = (currentPage: number, totalPages: number) => {
-  // Jika total halaman 7 atau kurang, tampilkan semua halaman
+  // If the total number of pages is 7 or less,
+  // display all pages without any ellipsis.
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-
-  // Jika halaman saat ini di antara 3 halaman pertama
+  // If the current page is among the first 3 pages,
+  // show the first 3, an ellipsis, and the last 2 pages.
   if (currentPage <= 3) {
     return [1, 2, 3, '...', totalPages - 1, totalPages];
   }
 
-
-  // Jika halaman saat ini di antara 3 halaman terakhir
+  // If the current page is among the last 3 pages,
+  // show the first 2, an ellipsis, and the last 3 pages.
   if (currentPage >= totalPages - 2) {
     return [1, 2, '...', totalPages - 2, totalPages - 1, totalPages];
   }
 
-
-  // Jika halaman saat ini di tengah
+  // If the current page is somewhere in the middle,
+  // show the first page, an ellipsis, the current page and its neighbors,
+  // another ellipsis, and the last page.
   return [
     1,
     '...',

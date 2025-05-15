@@ -1,332 +1,147 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
 // https://nextjs.org/learn/dashboard-app/fetching-data
 const users = [
-   {
-    id: 1,
-    name: "Count Vladislaus",
-    username: "admin123",
-    password: "12345",
-    role: "admin",
-  },
   {
-    id: 2,
-    name: "Witch Morgana",
-    username: "darkwitch",
-    password: "hex666",
-    role: "admin",
-  },
-  {
-    id: 3,
-    name: "Phantom Grim",
-    username: "shadowlord",
-    password: "ghost999",
-    role: "admin",
+    id: '410544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'User',
+    email: 'user@nextmail.com',
+    password: '123456',
   },
 ];
-
-const products = {
-  food: [
-    {
-      id: 11,
-      name: "Spiderweb Quesadilla",
-      price: 50000,
-      image: "/Spiderweb Quesadilla.jpg",
-      description:
-        "Quesadilla hitam dengan keju meleleh yang membentuk jaring laba-laba. Hati-hati, jangan sampai laba-laba keluar dari dalamnya!",
-    },
-    {
-      id: 12,
-      name: "Bloody Eyeball Bites",
-      price: 30000,
-      image: "/Bloody Eyeball Bites.jpg",
-      description:
-        "Gigitan bola daging dengan bola mata zaitun hitam, mengeluarkan darah setiap gigitan. Siap-siap terkejut!",
-    },
-    {
-      id: 13,
-      name: "Spooky Ghost Pizza",
-      price: 75000,
-      image: "/Spooky Gosht Pizza.jpg",
-      description:
-        "Pizza dengan keju mozzarella berbentuk hantu yang melayang. Rasakan sensasi dingin di tenggorokan seperti roh yang menuntut balas!",
-    },
-    {
-      id: 14,
-      name: "Witch’s Fingers",
-      price: 20000,
-      image: "/Witch’s Fingers.jpg",
-      description:
-        "Telur setan disulap jadi tatapan horor—mata berdarah yang siap memeriahkan pesta Halloween-mu!",
-    },
-    {
-      id: 15,
-      name: "Buried Alive Bites",
-      price: 25000,
-      image: "/Buried Alive Bites.jpg",
-      description:
-        "Kue cokelat yang tampak terkubur di dalam tanah, dengan lapisan brownie yang lembut dan cacing gummy yang menjulur keluar dari dalamnya. Jangan takut, itu hanya rasa manis!",
-    },
-  ],
-
-  drink: [
-    {
-      id: 16,
-      name: "Bloody Vision",
-      price: 30000,
-      image: "/Bloody Vision.jpg",
-      description:
-        "Koktail merah menyala berisi 'bola mata' buah dan jelly—minuman segar yang tampak mengerikan tapi nikmat!",
-    },
-    {
-      id: 17,
-      name: "Bloody Elixir",
-      price: 30000,
-      image: "/Bloody Elixir.jpg",
-      description:
-        "Ramuan merah pekat yang menggoda, terbuat dari jus delima yang memiliki kekuatan gelap. Hati-hati, sekali menyesap, kamu takkan bisa berhenti!",
-    },
-    {
-      id: 18,
-      name: "Graveyard Pudding",
-      price: 25000,
-      image: "/Graveyard Pudding.jpg",
-      description:
-        "Puding gelap dengan rasa mencekam, siap membawa Anda ke dunia yang tak terlihat",
-    },
-    {
-      id: 19,
-      name: "Haunted Ghost Shake",
-      price: 28000,
-      image: "/Haunted Ghost Shake.jpg",
-      description:
-        "Minuman es krim yang membawa sensasi arwah gentayangan, menambah misteri di setiap tegukan. Hati-Hati kamu bisa didatangi oleh arwah gentayangan!",
-    },
-    {
-      id: 20,
-      name: "Vampire Blood Bags",
-      price: 40000,
-      image: "/Vampire Blood Bags.jpg",
-      description:
-        "Minuman darah vampir yang penuh misteri, menggetarkan dalam setiap tetesnya. Berani coba?",
-    },
-  ],
-};
-
 
 const customers = [
   {
-    id: 1,
-    name: "Vlad Dracul",
-    email: "user123",
-    password: "12345",
-    role: "customer",
+    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81aa',
+    name: 'Evil Rabbit',
+    email: 'evil@rabbit.com',
+    image_url: '/customers/evil-rabbit.png',
   },
   {
-    id: 2,
-    name: "Morgana LeFay",
-    email: "morlefay01@gmail.com",
-    password: "darkmagic2023",
-    role: "customer",
+    id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
+    name: 'Desy wulandari',
+    email: 'delba@oliveira.com',
+    image_url: '/customers/delba-de-oliveira.png',
   },
   {
-    id: 3,
-    name: "Grim Reaper",
-    email: "grimrside@gmail.com",
-    password: "death666",
-    role: "customer",
+    id: '3958dc9e-742f-4377-85e9-fec4b6a6442a',
+    name: 'Lee Robinson',
+    email: 'lee@robinson.com',
+    image_url: '/customers/lee-robinson.png',
   },
   {
-    id: 4,
-    name: "Lilith Nightshade",
-    email: "lilithana@gmail.com",
-    password: "shadow999",
-    role: "customer",
+    id: '76d65c26-f784-44a2-ac19-586678f7c2f2',
+    name: 'Michael Novotny',
+    email: 'michael@novotny.com',
+    image_url: '/customers/michael-novotny.png',
   },
   {
-    id: 5,
-    name: "Banshee Wail",
-    email: "wailananana@gmail.com",
-    password: "scream1010",
-    role: "customer",
+    id: 'CC27C14A-0ACF-4F4A-A6C9-D45682C144B9',
+    name: 'Amy Burns',
+    email: 'amy@burns.com',
+    image_url: '/customers/amy-burns.png',
   },
   {
-    id: 6,
-    name: "Nosferatu Zodd",
-    email: "nosferatu.zodd@gmail.com",
-    password: "bloodthirst321",
-    role: "customer",
-  },
-  
-  {
-    id: 7,
-    name: "Raven Hex",
-    email: "raven.hex@gmail.com",
-    password: "curse777",
-    role: "customer",
-  },
-  {
-    id: 8,
-    name: "Draven Gloom",
-    email: "c",
-    password: "darkness456",
-    role: "customer",
-  },
-  {
-    id: 9,
-    name: "Selene Wraith",
-    email: "selene.wraith@gmail.com",
-    password: "ghostly123",
-    role: "customer",
-  },
-  {
-    id: 10,
-    name: "Zephyr Ghoul",
-    email: "zephyr.ghoul@gmail.com",
-    password: "haunt555",
-    role: "customer",
+    id: '13D07535-C59E-4157-A011-F8D2EF4E0CBB',
+    name: 'Luna Pond',
+    email: 'balazs@orban.com',
+    image_url: '/customers/balazs-orban.png',
   },
 ];
-
 
 const invoices = [
   {
-    id: "INV001",
-    customerName: "Vlad Dracul",
-    customerEmail: "user123",
-    amount: 155000,
-    date: "2025-05-14",
-    status: "paid",
-    items: [
-      { name: "Witch’s Fingers", quantity: 2, price: 20000 },
-      { name: "Bloody Elixir", quantity: 3, price: 30000 },
-      { name: "Spooky Ghost Pizza", quantity: 1, price: 75000 },
-    ],
+    customer_id: customers[0].id,
+    amount: 15795,
+    status: 'pending',
+    date: '2022-12-06',
   },
-
   {
-    id: "INV002",
-    customerName: "Morgana LeFay",
-    customerEmail: "morlefay01@gmail.com",
-    amount: 85000,
-    date: "2025-05-13",
-    status: "pending",
-    items: [
-      { name: "Spiderweb Quesadilla", quantity: 1, price: 50000 },
-      { name: "Vampire Blood Bags", quantity: 1, price: 35000 },
-    ],
+    customer_id: customers[1].id,
+    amount: 20348,
+    status: 'pending',
+    date: '2022-11-14',
   },
-
   {
-    id: "INV003",
-    customerName: "Grim Reaper",
-    customerEmail: "grimrside@gmail.com",
-    amount: 60000,
-    date: "2025-05-12",
-    status: "paid",
-    items: [
-      { name: "Haunted Ghost Shake", quantity: 2, price: 28000 },
-      { name: "Graveyard Pudding", quantity: 1, price: 25000 },
-    ],
+    customer_id: customers[4].id,
+    amount: 3040,
+    status: 'paid',
+    date: '2022-10-29',
   },
-
   {
-    id: "INV004",
-    customerName: "Lilith Nightshade",
-    customerEmail: "lilithana@gmail.com",
-    amount: 130000,
-    date: "2025-05-11",
-    status: "cancelled",
-    items: [
-      { name: "Spooky Ghost Pizza", quantity: 1, price: 75000 },
-      { name: "Bloody Eyeball Bites", quantity: 2, price: 30000 },
-    ],
+    customer_id: customers[3].id,
+    amount: 44800,
+    status: 'paid',
+    date: '2023-09-10',
   },
-
   {
-    id: "INV005",
-    customerName: "Banshee Wail",
-    customerEmail: "wailananana@gmail.com",
-    amount: 90000,
-    date: "2025-05-10",
-    status: "paid",
-    items: [
-      { name: "Mummy Hot Dogs", quantity: 2, price: 45000 },
-    ],
+    customer_id: customers[5].id,
+    amount: 34577,
+    status: 'pending',
+    date: '2023-08-05',
   },
-
   {
-    id: "INV006",
-    customerName: "Nosferatu Zodd",
-    customerEmail: "nosferatu.zodd@gmail.com",
-    amount: 168000,
-    date: "2025-05-09",
-    status: "pending",
-    items: [
-      { name: "Goblin Green Sliders", quantity: 2, price: 55000 },
-      { name: "Phantom Fog Latte", quantity: 2, price: 38000 },
-    ],
+    customer_id: customers[2].id,
+    amount: 54246,
+    status: 'pending',
+    date: '2023-07-16',
   },
-
   {
-    id: "INV007",
-    customerName: "Raven Hex",
-    customerEmail: "raven.hex@gmail.com",
-    amount: 75000,
-    date: "2025-05-08",
-    status: "paid",
-    items: [
-      { name: "Haunted Pumpkin Pie", quantity: 1, price: 60000 },
-      { name: "Ghoul’s Glowing Juice", quantity: 1, price: 32000 },
-    ],
+    customer_id: customers[0].id,
+    amount: 666,
+    status: 'pending',
+    date: '2023-06-27',
   },
-
   {
-    id: "INV008",
-    customerName: "Draven Gloom",
-    customerEmail: "draven.gloom@gmail.com",
-    amount: 105000,
-    date: "2025-05-07",
-    status: "paid",
-    items: [
-      { name: "Cursed Cauliflower Brains", quantity: 2, price: 40000 },
-      { name: "Witch’s Cauldron Brew", quantity: 1, price: 35000 },
-    ],
+    customer_id: customers[3].id,
+    amount: 32545,
+    status: 'paid',
+    date: '2023-06-09',
   },
-
   {
-    id: "INV009",
-    customerName: "Selene Wraith",
-    customerEmail: "selene.wraith@gmail.com",
-    amount: 82000,
-    date: "2025-05-06",
-    status: "pending",
-    items: [
-      { name: "Skeleton Bone Milkshake", quantity: 1, price: 40000 },
-      { name: "Zombie Slush", quantity: 1, price: 33000 },
-    ],
+    customer_id: customers[4].id,
+    amount: 1250,
+    status: 'paid',
+    date: '2023-06-17',
   },
-
   {
-    id: "INV010",
-    customerName: "Zephyr Ghoul",
-    customerEmail: "zephyr.ghoul@gmail.com",
-    amount: 115000,
-    date: "2025-05-05",
-    status: "cancelled",
-    items: [
-      { name: "Graveyard Taco Dip", quantity: 1, price: 50000 },
-      { name: "Buried Alive Bites", quantity: 2, price: 25000 },
-    ],
+    customer_id: customers[5].id,
+    amount: 8546,
+    status: 'paid',
+    date: '2023-06-07',
+  },
+  {
+    customer_id: customers[1].id,
+    amount: 500,
+    status: 'paid',
+    date: '2023-08-19',
+  },
+  {
+    customer_id: customers[5].id,
+    amount: 8945,
+    status: 'paid',
+    date: '2023-06-03',
+  },
+  {
+    customer_id: customers[2].id,
+    amount: 1000,
+    status: 'paid',
+    date: '2022-06-05',
   },
 ];
-
 
 const revenue = [
-  { week: "Week 1 (15-21 Apr)", revenue: 2100000 },
-  { week: "Week 2 (22-28 Apr)", revenue: 2800000 },
-  { week: "Week 3 (29 Apr-5 May)", revenue: 1700000 },
-  { week: "Week 4 (6-14 May)", revenue: 1055000 },
+  { month: 'Jan', revenue: 2000 },
+  { month: 'Feb', revenue: 1800 },
+  { month: 'Mar', revenue: 2200 },
+  { month: 'Apr', revenue: 2500 },
+  { month: 'May', revenue: 2300 },
+  { month: 'Jun', revenue: 3200 },
+  { month: 'Jul', revenue: 3500 },
+  { month: 'Aug', revenue: 3700 },
+  { month: 'Sep', revenue: 2500 },
+  { month: 'Oct', revenue: 2800 },
+  { month: 'Nov', revenue: 3000 },
+  { month: 'Dec', revenue: 4800 },
 ];
 
-
-export { users, customers, invoices, revenue, products};
+export { users, customers, invoices, revenue };

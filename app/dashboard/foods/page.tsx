@@ -111,7 +111,7 @@ export default function FoodsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
-            {filteredFoods.length > 0 ? (
+             {filteredFoods.length > 0 ? (
               filteredFoods.map((food, index) => (
                 <ProductCard
                   key={index}
@@ -124,7 +124,7 @@ export default function FoodsPage() {
               ))
             ) : (
               <p className="text-gray-500">No products found</p>
-            )}
+            )} 
           </div>
 
           <DeleteConfirmation
