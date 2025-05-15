@@ -5,7 +5,7 @@ import React from 'react';
 import RevenueChart from '../ui/dashboard/revenue-chart';
 import LatestInvoices from '../ui/dashboard/latest-invoices';
 import { lacquer } from '../ui/font';
-import { fetchRevenuePrisma, fetchLatestInvoicesPrisma } from '@/app/lib/prisma';
+import { fetchRevenuePrisma } from '@/app/lib/prisma';
 
 // interface DashboardProps {
 //   soulCount: number;
@@ -15,7 +15,6 @@ import { fetchRevenuePrisma, fetchLatestInvoicesPrisma } from '@/app/lib/prisma'
 
 export default async function Page() {
   const revenue= await fetchRevenuePrisma();
-  const latestInvoices= await fetchLatestInvoicesPrisma();
   return ( 
     <main>
       <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>
@@ -25,7 +24,7 @@ export default async function Page() {
       </div>
       <div className="mt-6 grid grid-cols-l gap-6 md:grid-cols-4 lg:grid-cols-8">
         {<RevenueChart revenue={revenue} />}
-        {<LatestInvoices latestInvoices={latestInvoices} /> }
+        {/* {<LatestInvoices latestInvoices={latestInvoices} />} */}
       </div>
     </main>
   );
