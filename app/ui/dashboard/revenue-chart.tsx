@@ -30,19 +30,20 @@ export default async function RevenueChart() {
             ))}
           </div>
 
-          {revenue.map((month) => (
-            <div key={month.month} className="flex flex-col items-center gap-2">
-              <div
-                className="w-full rounded-md bg-blue-300"
-                style={{
-                  height: `${(chartHeight / topLabel) * month.revenue}px`,
-                }}
-              ></div>
-              <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
-                {month.month}
-              </p>
-            </div>
-          ))}
+          {revenue.map((month, index) => (
+          <div key={`${month.id}-${index}`} className="flex flex-col items-center gap-2">
+            <div
+              className="w-full rounded-md bg-blue-300"
+              style={{
+                height: `${(chartHeight / topLabel) * month.revenue}px`,
+              }}
+            ></div>
+            <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
+              {month.month}
+            </p>
+          </div>
+        ))}
+
         </div>
         <div className="flex items-center pb-2 pt-6">
           <CalendarIcon className="h-5 w-5 text-gray-500" />
