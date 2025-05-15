@@ -21,18 +21,6 @@ export async function fetchLatestInvoicesPrisma() {
       orderBy: {
         date: "desc",
       },
-<<<<<<< HEAD
-      // Hapus include customer jika tidak ada relasi customer
-      // include: {
-      //   customer: {
-      //     select: {
-      //       name: true,
-      //       image_url: true,
-      //       email: true,
-      //     },
-      //   },
-      // },
-=======
       include: {
         customer: {
           select: {
@@ -42,21 +30,13 @@ export async function fetchLatestInvoicesPrisma() {
           },
         },
       },
->>>>>>> 8305edb42fd3f83201536e74fa2033bad6dd0c2a
     });
 
     const latestInvoices = data.map((invoice) => ({
       amount: formatCurrency(invoice.amount),
-<<<<<<< HEAD
-      // Jika tidak ada relasi customer, gunakan field yang ada di invoices
-      // name: invoice.customer?.name,
-      // image_url: invoice.customer?.image_url,
-      // email: invoice.customer?.email,
-=======
       name: invoice.customer.name,
       image_url: invoice.customer.image_url,
       email: invoice.customer.email,
->>>>>>> 8305edb42fd3f83201536e74fa2033bad6dd0c2a
       id: invoice.id,
     })) as unknown as LatestInvoice[];
 
@@ -99,10 +79,6 @@ export async function fetchCardDataPrisma() {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch card data.");
   }
-<<<<<<< HEAD
 }
 
 export default prisma;
-=======
-}
->>>>>>> 8305edb42fd3f83201536e74fa2033bad6dd0c2a
