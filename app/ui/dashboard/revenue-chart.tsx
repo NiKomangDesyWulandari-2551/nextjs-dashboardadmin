@@ -59,14 +59,9 @@ import { CalendarIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/font';
 import { fetchRevenuePrisma } from '@/app/lib/prisma';
 
-function formatDateLabel(dateString: string) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
-
 export default async function RevenueChart() {
   const revenue = await fetchRevenuePrisma();
-  
+
   const chartHeight = 350;
   const { yAxisLabels, topLabel } = generateYAxis(revenue);
 
@@ -81,10 +76,10 @@ export default async function RevenueChart() {
       </h2>
 
       <div className="rounded-xl bg-gray-50 p-4">
-        <div className="sm:grid-cols-13 mt-0 grid grid-cols-12 items-end gap-2 rounded-md bg-white p-4 md:gap-4">
+        <div className="grid grid-cols-[auto,1fr] gap-4">
           {/* Y Axis */}
           <div
-            className="mb-6 hidden flex-col justify-between text-sm text-gray-400 sm:flex"
+            className="hidden sm:flex flex-col justify-between text-sm text-gray-400 w-12"
             style={{ height: `${chartHeight}px` }}
           >
             {yAxisLabels.map((label) => (
@@ -92,20 +87,28 @@ export default async function RevenueChart() {
             ))}
           </div>
 
-          {/* Bars */}
-          {revenue.map((week, index) => (
-            <div key={`${week.date}-${index}`} className="flex flex-col items-center gap-2">
+          {/* Chart Bars */}
+          <div className="flex justify-between items-end h-[350px] w-full overflow-x-auto gap-2">
+            {revenue.map((week, index) => (
               <div
-                className="w-full rounded-md bg-blue-300"
-                style={{
-                  height: `${(chartHeight / topLabel) * week.revenue}px`,
-                }}
-              ></div>
-              <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
-                {formatDateLabel(week.date)}
-              </p>
-            </div>
-          ))}
+                key={`${week.week}-${index}`}
+                className="flex flex-col items-center"
+              >
+                <div
+                  className="w-4 sm:w-6 rounded-md bg-blue-300"
+                  style={{
+                    height: `${(chartHeight / topLabel) * week.revenue}px`,
+                  }}
+                ></div>
+                <p className="mt-2 text-xs text-gray-500 whitespace-nowrap">
+                  {new Date(week.week).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Footer */}
