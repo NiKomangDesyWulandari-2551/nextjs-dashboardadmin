@@ -24,6 +24,94 @@ const users = [
   },
 ];
 
+const products = {
+  food: [
+    {
+      id: 11,
+      name: "Spiderweb Quesadilla",
+      price: 50000,
+      image: "/Spiderweb Quesadilla.jpg",
+      description:
+        "Quesadilla hitam dengan keju meleleh yang membentuk jaring laba-laba. Hati-hati, jangan sampai laba-laba keluar dari dalamnya!",
+    },
+    {
+      id: 12,
+      name: "Bloody Eyeball Bites",
+      price: 30000,
+      image: "/Bloody Eyeball Bites.jpg",
+      description:
+        "Gigitan bola daging dengan bola mata zaitun hitam, mengeluarkan darah setiap gigitan. Siap-siap terkejut!",
+    },
+    {
+      id: 13,
+      name: "Spooky Ghost Pizza",
+      price: 75000,
+      image: "/Spooky Gosht Pizza.jpg",
+      description:
+        "Pizza dengan keju mozzarella berbentuk hantu yang melayang. Rasakan sensasi dingin di tenggorokan seperti roh yang menuntut balas!",
+    },
+    {
+      id: 14,
+      name: "Witch’s Fingers",
+      price: 20000,
+      image: "/Witch’s Fingers.jpg",
+      description:
+        "Telur setan disulap jadi tatapan horor—mata berdarah yang siap memeriahkan pesta Halloween-mu!",
+    },
+    {
+      id: 15,
+      name: "Buried Alive Bites",
+      price: 25000,
+      image: "/Buried Alive Bites.jpg",
+      description:
+        "Kue cokelat yang tampak terkubur di dalam tanah, dengan lapisan brownie yang lembut dan cacing gummy yang menjulur keluar dari dalamnya. Jangan takut, itu hanya rasa manis!",
+    },
+  ],
+
+  drink: [
+    {
+      id: 16,
+      name: "Bloody Vision",
+      price: 30000,
+      image: "/Bloody Vision.jpg",
+      description:
+        "Koktail merah menyala berisi 'bola mata' buah dan jelly—minuman segar yang tampak mengerikan tapi nikmat!",
+    },
+    {
+      id: 17,
+      name: "Bloody Elixir",
+      price: 30000,
+      image: "/Bloody Elixir.jpg",
+      description:
+        "Ramuan merah pekat yang menggoda, terbuat dari jus delima yang memiliki kekuatan gelap. Hati-hati, sekali menyesap, kamu takkan bisa berhenti!",
+    },
+    {
+      id: 18,
+      name: "Graveyard Pudding",
+      price: 25000,
+      image: "/Graveyard Pudding.jpg",
+      description:
+        "Puding gelap dengan rasa mencekam, siap membawa Anda ke dunia yang tak terlihat",
+    },
+    {
+      id: 19,
+      name: "Haunted Ghost Shake",
+      price: 28000,
+      image: "/Haunted Ghost Shake.jpg",
+      description:
+        "Minuman es krim yang membawa sensasi arwah gentayangan, menambah misteri di setiap tegukan. Hati-Hati kamu bisa didatangi oleh arwah gentayangan!",
+    },
+    {
+      id: 20,
+      name: "Vampire Blood Bags",
+      price: 40000,
+      image: "/Vampire Blood Bags.jpg",
+      description:
+        "Minuman darah vampir yang penuh misteri, menggetarkan dalam setiap tetesnya. Berani coba?",
+    },
+  ],
+};
+
 
 const customers = [
   {
@@ -234,18 +322,11 @@ const invoices = [
 
 
 const revenue = [
-  { month: 'Jan', revenue: 2000 },
-  { month: 'Feb', revenue: 1800 },
-  { month: 'Mar', revenue: 2200 },
-  { month: 'Apr', revenue: 2500 },
-  { month: 'May', revenue: 2300 },
-  { month: 'Jun', revenue: 3200 },
-  { month: 'Jul', revenue: 3500 },
-  { month: 'Aug', revenue: 3700 },
-  { month: 'Sep', revenue: 2500 },
-  { month: 'Oct', revenue: 2800 },
-  { month: 'Nov', revenue: 3000 },
-  { month: 'Dec', revenue: 4800 },
+  { week: "Week 1 (15-21 Apr)", revenue: 2100000 },
+  { week: "Week 2 (22-28 Apr)", revenue: 2800000 },
+  { week: "Week 3 (29 Apr-5 May)", revenue: 1700000 },
+  { week: "Week 4 (6-14 May)", revenue: 1055000 },
 ];
 
-export { users, customers, invoices, revenue };
+
+export { users, customers, invoices, revenue, products};
