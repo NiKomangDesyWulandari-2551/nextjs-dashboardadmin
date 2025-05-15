@@ -75,7 +75,7 @@ export default async function RevenueChart() {
         Weekly Revenue
       </h2>
 
-      <div className="rounded-xl bg-gray-50 p-4 overflow-hidden relative">
+      <div className="rounded-xl bg-gray-50 p-4 overflow-hidden">
         <div className="grid grid-cols-[auto,1fr] gap-4">
           {/* Y Axis */}
           <div
@@ -87,23 +87,23 @@ export default async function RevenueChart() {
             ))}
           </div>
 
-          {/* Chart Bars */}
-          <div className="flex justify-between items-end h-[350px] w-full overflow-x-auto gap-2">
+          {/* Bars */}
+          <div className="flex h-[350px] items-end overflow-x-auto gap-3">
             {revenue.map((week, index) => (
               <div
                 key={`${week.week}-${index}`}
-                className="flex flex-col items-center"
+                className="flex flex-col items-center min-w-[30px]"
               >
                 <div
-                  className="w-4 sm:w-6 rounded-md bg-blue-300"
+                  className="w-2 sm:w-4 bg-blue-300 rounded-md"
                   style={{
                     height: `${(chartHeight / topLabel) * week.revenue}px`,
                   }}
                 ></div>
-                <p className="-rotate-90 text-[10px] text-gray-400 sm:rotate-0 sm:text-sm">
-                  {new Date(week.week).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
+                <p className="mt-1 text-[10px] text-gray-500 sm:text-xs">
+                  {new Date(week.week).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
                   })}
                 </p>
               </div>

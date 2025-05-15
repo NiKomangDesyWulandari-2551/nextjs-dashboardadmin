@@ -21,19 +21,42 @@ export const formatDateToLocal = (
   return formatter.format(date);
 };
 
-export const generateYAxis = (revenue: Revenue[]) => {
-  // Calculate what labels we need to display on the y-axis
-  // based on highest record and in 1000s
-  const yAxisLabels = [];
-  const highestRecord = Math.max(...revenue.map((month) => month.revenue));
-  const topLabel = Math.ceil(highestRecord / 1000) * 1000;
+// export const generateYAxis = (revenue: Revenue[]) => {
+//   // Calculate what labels we need to display on the y-axis
+//   // based on highest record and in 1000s
+//   const yAxisLabels = [];
+//   const highestRecord = Math.max(...revenue.map((month) => month.revenue));
+//   const topLabel = Math.ceil(highestRecord / 1000) * 1000;
 
-  for (let i = topLabel; i >= 0; i -= 5000) {
+//   for (let i = topLabel; i >= 0; i -= 5000) {
+//     yAxisLabels.push(`$${i / 1000}K`);
+//   }
+
+//   return { yAxisLabels, topLabel };
+// };
+
+export const generateYAxis = (revenue: Revenue[]) => {
+  const yAxisLabels: string[] = [];
+  const highestRevenue = Math.max(...revenue.map((item) => item.revenue));
+
+  // Pembulatan ke atas ke kelipatan 1000
+  const topLabel = Math.ceil(highestRevenue / 1000) * 1000;
+
+  // Tentukan maksimal 6 label Y-axis
+  const maxLabels = 6;
+  const rawInterval = topLabel / maxLabels;
+
+  // Bulatkan interval ke kelipatan 1000 terdekat (biar tetap terlihat rapi)
+  const interval = Math.ceil(rawInterval / 1000) * 1000;
+
+  for (let i = topLabel; i >= 0; i -= interval) {
     yAxisLabels.push(`$${i / 1000}K`);
   }
 
   return { yAxisLabels, topLabel };
 };
+
+
 
 export const generatePagination = (currentPage: number, totalPages: number) => {
   // If the total number of pages is 7 or less,
