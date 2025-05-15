@@ -1,2 +1,4 @@
 onlyBuiltDependencies:
   - '@prisma/client'
+ignoredBuiltDependencies:
+  - sharp
