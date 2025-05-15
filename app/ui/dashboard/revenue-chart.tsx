@@ -75,7 +75,7 @@ export default async function RevenueChart() {
         Weekly Revenue
       </h2>
 
-      <div className="rounded-xl bg-gray-50 p-4">
+      <div className="rounded-xl bg-gray-50 p-4 overflow-hidden relative">
         <div className="grid grid-cols-[auto,1fr] gap-4">
           {/* Y Axis */}
           <div
@@ -100,10 +100,10 @@ export default async function RevenueChart() {
                     height: `${(chartHeight / topLabel) * week.revenue}px`,
                   }}
                 ></div>
-                <p className="mt-2 text-xs text-gray-500 whitespace-nowrap">
-                  {new Date(week.week).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
+                <p className="-rotate-90 text-[10px] text-gray-400 sm:rotate-0 sm:text-sm">
+                  {new Date(week.week).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
                   })}
                 </p>
               </div>
