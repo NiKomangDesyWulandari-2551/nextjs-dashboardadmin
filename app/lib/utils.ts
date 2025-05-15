@@ -1,7 +1,8 @@
 import { Revenue } from './definitions';
 
-export const formatCurrency = (amount: number) => {
-  return amount.toLocaleString('id-ID', {
+export const formatCurrency = (amount: number | bigint | null): string => {
+  const value = Number(amount ?? 0); // Konversi ke number, gunakan 0 jika null
+  return value.toLocaleString('id-ID', {
     style: 'currency',
     currency: 'IDR',
   });
