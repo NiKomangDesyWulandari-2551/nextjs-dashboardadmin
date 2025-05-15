@@ -120,9 +120,81 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  price: 'price',
+  image: 'image',
+  description: 'description',
+  adminId: 'adminId',
+  categoryId: 'categoryId'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.CustomerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  role: 'role'
+};
+
+exports.Prisma.AdminScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  username: 'username',
+  password: 'password',
+  role: 'role'
+};
+
+exports.Prisma.InvoiceScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  createdAt: 'createdAt',
+  totalAmount: 'totalAmount'
+};
+
+exports.Prisma.InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  productId: 'productId',
+  quantity: 'quantity',
+  price: 'price'
+};
+
+exports.Prisma.RevenueScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  total: 'total',
+  invoiceId: 'invoiceId'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+exports.Role = exports.$Enums.Role = {
+  admin: 'admin',
+  customer: 'customer'
+};
 
 exports.Prisma.ModelName = {
-
+  Product: 'Product',
+  Category: 'Category',
+  Customer: 'Customer',
+  Admin: 'Admin',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
+  Revenue: 'Revenue'
 };
 
 /**
