@@ -4,15 +4,41 @@ import { formatCurrency } from "./utils";
 
 const prisma = new PrismaClient();
 
+// export async function fetchRevenuePrisma() {
+//   try {
+//     const data = await prisma.revenue.findMany();
+//     return data;
+//   } catch (error) {
+//     console.error("Database Error:", error);
+//     throw new Error("Failed to fetch revenue data.");
+//   }
+// }
 export async function fetchRevenuePrisma() {
   try {
-    const data = await prisma.revenue.findMany();
-    return data;
+    // Query raw SQL untuk group by minggu (week start date) dan sum total revenue
+    const weeklyData = await prisma.$queryRaw<
+      { week_start: Date; revenue: number }[]
+    >`
+      SELECT
+        date_trunc('week', "date") AS week_start,
+        SUM(total) AS revenue
+      FROM "Revenue"
+      GROUP BY week_start
+      ORDER BY week_start ASC
+      LIMIT 12
+    `;
+
+    // Mapping data ke format yang frontend bisa pakai
+    return weeklyData.map(item => ({
+      week: item.week_start.toISOString().slice(0, 10), // format yyyy-mm-dd
+      revenue: Number(item.revenue),
+    }));
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch revenue data.");
   }
 }
+
 
 export async function fetchLatestInvoicesPrisma() {
   try {
