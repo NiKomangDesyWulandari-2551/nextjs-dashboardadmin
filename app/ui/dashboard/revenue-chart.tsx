@@ -59,6 +59,11 @@ import { CalendarIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/font';
 import { fetchRevenuePrisma } from '@/app/lib/prisma';
 
+function formatDateLabel(dateString: string) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
 export default async function RevenueChart() {
   const revenue = await fetchRevenuePrisma();
   
@@ -89,7 +94,7 @@ export default async function RevenueChart() {
 
           {/* Bars */}
           {revenue.map((week, index) => (
-            <div key={`${week.week}-${index}`} className="flex flex-col items-center gap-2">
+            <div key={`${week.date}-${index}`} className="flex flex-col items-center gap-2">
               <div
                 className="w-full rounded-md bg-blue-300"
                 style={{
@@ -97,7 +102,7 @@ export default async function RevenueChart() {
                 }}
               ></div>
               <p className="-rotate-90 text-sm text-gray-400 sm:rotate-0">
-                {week.week}
+                {formatDateLabel(week.date)}
               </p>
             </div>
           ))}
