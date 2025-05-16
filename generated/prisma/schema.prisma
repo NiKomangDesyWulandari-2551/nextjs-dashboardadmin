@@ -18,6 +18,8 @@ model Product {
   admin        Admin         @relation(fields: [adminId], references: [id])
   categoryId   Int
   category     Category      @relation(fields: [categoryId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
   invoiceItems InvoiceItem[]
   transactions Transaction[]
 }

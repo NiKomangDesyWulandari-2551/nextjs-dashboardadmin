@@ -5,7 +5,7 @@ import React from 'react';
 import RevenueChart from '../ui/dashboard/revenue-chart';
 import LatestInvoices from '../ui/dashboard/latest-invoices';
 import { lacquer } from '../ui/font';
-import { fetchRevenuePrisma } from '@/app/lib/prisma';
+import { fetchRevenuePrisma, fetchProducts, fetchLatestInvoicesPrisma} from '@/app/lib/prisma';
 
 // interface DashboardProps {
 //   soulCount: number;
@@ -14,19 +14,25 @@ import { fetchRevenuePrisma } from '@/app/lib/prisma';
 
 // }
 
-export default async function Page() {
-  const revenue= await fetchRevenuePrisma();
-  return ( 
+const [revenue, latestInvoices, products] = await Promise.all([
+    fetchRevenuePrisma(),
+    fetchLatestInvoicesPrisma(),
+    fetchProducts(),
+  ]);
+
+  return (
     <main>
       <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>
+        Dashboard
       </h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {}
+        {/* Komponen kartu lainnya jika ada */}
       </div>
-      <div className="mt-6 grid grid-cols-l gap-6 md:grid-cols-4 lg:grid-cols-8">
-        {<RevenueChart revenue={revenue} />}
-        {/* {<LatestInvoices latestInvoices={latestInvoices} />} */}
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        <RevenueChart revenue={revenue} />
+        <LatestInvoices latestInvoices={latestInvoices} />
       </div>
+      <ProductCatalog products={products} />
     </main>
   );
 }

@@ -13,6 +13,31 @@ const prisma = new PrismaClient();
 //     throw new Error("Failed to fetch revenue data.");
 //   }
 // }
+
+export async function fetchProducts() {
+  try {
+    const products = await prisma.product.findMany({
+      select: {
+        id: true,
+        name: true,
+        price: true,
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+
+    return products.map(product => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+    }));
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch products data.");
+  }
+}
+
 export async function fetchRevenuePrisma() {
   try {
     // Query raw SQL untuk group by minggu (week start date) dan sum total revenue
