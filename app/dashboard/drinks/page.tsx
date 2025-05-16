@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import ProductCard from '@/app/components/ProductCard';
 import { FaSearch } from "react-icons/fa";
 import AddProductForm from '@/app/components/addProduct';
-import DeleteConfirmation from '@/app/components/confirmDeleteProduct';
+import DeleteConfirmation from '@/app/components/DeletedConfirmation';
+import { deleteProduct } from '@/app/components/confirmDeleteProduct';
 import EditProductForm from '@/app/components/editProduct';
 import Head from "next/head";
 

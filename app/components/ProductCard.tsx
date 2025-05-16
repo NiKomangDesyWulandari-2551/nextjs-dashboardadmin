@@ -70,9 +70,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/app/ui/table";
-import DeleteConfirmation from './DeleteConfirmation';
-import { deleteProduct } from '@/app/lib/actions';
+import DeleteConfirmation from '@/app/components/DeletedConfirmation';
+import { deleteProduct } from '@/app/components/confirmDeleteProduct';
+import { lusitana } from '@/app/ui/font';
+// import Search from '@/app/ui/search';
 
 interface Product {
   id: string;
@@ -81,10 +82,10 @@ interface Product {
 }
 
 interface ProductCatalogProps {
-  products: Product[];
+  products: Product[] | undefined;
 }
 
-export default function ProductCatalog({ products }: ProductCatalogProps) {
+export default function ProductCatalog({ products = [] }: ProductCatalogProps) {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
@@ -116,54 +117,137 @@ export default function ProductCatalog({ products }: ProductCatalogProps) {
     setSelectedProductId(null);
   };
 
+  // Log produk untuk debugging
+  console.log("Produk yang diterima di ProductCatalog:", products);
+
   return (
     <>
-      <div className="mt-6">
-        <h2 className="text-lg font-medium mb-4">Katalog Produk</h2>
-        <div className="border rounded-lg overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[150px]">ID Produk</TableHead>
-                <TableHead>Nama Produk</TableHead>
-                <TableHead>Harga</TableHead>
-                <TableHead className="w-[200px]">Aksi</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {products.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center">
-                    Tidak ada data produk.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                products.map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell className="font-medium">{product.id.slice(0, 8)}</TableCell>
-                    <TableCell>{product.name}</TableCell>
-                    <TableCell>Rp. {product.price.toLocaleString('id-ID')}</TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <button
-                          className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
-                          onClick={() => handleEdit(product.id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                          onClick={() => handleDeleteClick(product.id)}
-                        >
-                          Delete
-                        </button>
+      <div className="w-full">
+        <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
+          Katalog Produk
+        </h1>
+        {/* <Search placeholder="Cari produk..." />
+        <div className="mt-6 flow-root">
+          <div className="overflow-x-auto">
+            <div className="inline-block min-w-full align-middle">
+              <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0"> */}
+                {/* Tampilan Mobile */}
+                <div className="md:hidden">
+                  {products.length > 0 ? (
+                    products.map((product) => (
+                      <div
+                        key={product.id}
+                        className="mb-2 w-full rounded-md bg-white p-4"
+                      >
+                        <div className="flex items-center justify-between border-b pb-4">
+                          <div>
+                            <p className="text-sm font-medium">{product.name}</p>
+                            <p className="text-sm text-gray-500">
+                              ID:{' '}
+                              {typeof product.id === 'string'
+                                ? product.id.slice(0, 8)
+                                : 'ID Tidak Valid'}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex w-full items-center justify-between border-b py-5">
+                          <div className="flex w-1/2 flex-col">
+                            <p className="text-xs">Harga</p>
+                            <p className="font-medium">
+                              Rp. {product.price.toLocaleString('id-ID')}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="pt-4 text-sm">
+                          <div className="flex space-x-2">
+                            <button
+                              className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
+                              onClick={() => handleEdit(product.id)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                              onClick={() => handleDeleteClick(product.id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                    ))
+                  ) : (
+                    <div className="p-4 text-center text-gray-500">
+                      Tidak ada produk tersedia.
+                    </div>
+                  )}
+                </div>
+                {/* Tampilan Desktop */}
+                <table className="hidden min-w-full rounded-md text-gray-900 md:table">
+                  <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
+                    <tr>
+                      <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                        ID Produk
+                      </th>
+                      <th scope="col" className="px-3 py-5 font-medium">
+                        Nama Produk
+                      </th>
+                      <th scope="col" className="px-3 py-5 font-medium">
+                        Harga
+                      </th>
+                      <th scope="col" className="px-4 py-5 font-medium">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 text-gray-900">
+                    {products.length > 0 ? (
+                      products.map((product) => (
+                        <tr key={product.id} className="group">
+                          <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
+                            {typeof product.id === 'string'
+                              ? product.id.slice(0, 8)
+                              : 'ID Tidak Valid'}
+                          </td>
+                          <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                            {product.name}
+                          </td>
+                          <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                            Rp. {product.price.toLocaleString('id-ID')}
+                          </td>
+                          <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
+                            <div className="flex space-x-2">
+                              <button
+                                className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
+                                onClick={() => handleEdit(product.id)}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                                onClick={() => handleDeleteClick(product.id)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={4}
+                          className="whitespace-nowrap bg-white py-5 text-sm text-center text-gray-500"
+                        >
+                          Tidak ada produk tersedia.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <DeleteConfirmation

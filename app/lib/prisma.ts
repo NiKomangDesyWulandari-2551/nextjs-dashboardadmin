@@ -14,6 +14,30 @@ const prisma = new PrismaClient();
 //   }
 // }
 
+// export async function fetchProducts() {
+//   try {
+//     const products = await prisma.product.findMany({
+//       select: {
+//         id: true,
+//         name: true,
+//         price: true,
+//       },
+//       orderBy: {
+//         id: 'asc',
+//       },
+//     });
+
+//     return products.map(product => ({
+//       id: product.id,
+//       name: product.name,
+//       price: product.price,
+//     }));
+//   } catch (error) {
+//     console.error("Database Error:", error);
+//     throw new Error("Failed to fetch products data.");
+//   }
+// }
+
 export async function fetchProducts() {
   try {
     const products = await prisma.product.findMany({
@@ -27,14 +51,21 @@ export async function fetchProducts() {
       },
     });
 
-    return products.map(product => ({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-    }));
+    // Filter produk dengan id valid dan log data
+    const validProducts = products
+      .filter(product => typeof product.id === 'string' && product.id.length > 0)
+      .map(product => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+      }));
+
+    console.log("Data produk yang diambil:", validProducts);
+
+    return validProducts;
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch products data.");
+    console.error("Error Database:", error);
+    return []; // Kembalikan array kosong jika gagal
   }
 }
 

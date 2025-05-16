@@ -5,7 +5,8 @@ import { FaSearch } from 'react-icons/fa';
 import Head from 'next/head';
 import AddTransactionForm from '@/app/components/AddTransactionForm';
 import EditTransactionForm from '@/app/components/editTransaksi';
-import DeleteConfirmation from '@/app/components/confirmDeleteProduct';
+import DeleteConfirmation from '@/app/components/DeletedConfirmation';
+import { deleteProduct } from '@/app/components/confirmDeleteProduct';
 
 interface Transaction {
   transactionId: string;

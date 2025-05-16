@@ -43,6 +43,8 @@
 // }
 
 // app/ui/DeleteConfirmation.tsx
+'use client';
+
 import { motion } from "framer-motion";
 
 interface DeleteConfirmationProps {
@@ -64,19 +66,19 @@ export default function DeleteConfirmation({ isOpen, onCancel, onConfirm }: Dele
         transition={{ duration: 0.2 }}
         className="fixed top-[70px] inset-x-0 mx-auto bg-gray-800 px-6 py-3 rounded-2xl shadow-lg flex flex-col items-center space-y-3 z-50 max-w-[280px] w-auto pointer-events-auto"
       >
-        <p className="text-white text-sm font-semibold">Really want to delete?</p>
+        <p className="text-white text-sm font-semibold">Yakin ingin menghapus?</p>
         <div className="flex space-x-10">
           <button
             onClick={onCancel}
             className="bg-red-500 text-white px-5 py-1 rounded-full text-sm hover:bg-red-600"
           >
-            No
+            Tidak
           </button>
           <button
             onClick={onConfirm}
             className="bg-green-500 text-white px-5 py-1 rounded-full text-sm hover:bg-green-600"
           >
-            Yes
+            Ya
           </button>
         </div>
       </motion.div>
