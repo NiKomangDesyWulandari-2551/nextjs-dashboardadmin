@@ -71,10 +71,9 @@ export async function fetchProducts() {
 
 export async function fetchRevenuePrisma() {
   try {
-    // Query raw SQL untuk group by minggu (week start date) dan sum total revenue
     const weeklyData = await prisma.$queryRaw<
       { week_start: Date; revenue: number }[]
-    >
+    >(sql`
       SELECT
         date_trunc('week', "date") AS week_start,
         SUM(total) AS revenue
@@ -82,19 +81,14 @@ export async function fetchRevenuePrisma() {
       GROUP BY week_start
       ORDER BY week_start ASC
       LIMIT 12
-    ;
+    `);
 
-    // Mapping data ke format yang frontend bisa pakai
-    return weeklyData.map(item => ({
-      week: item.week_start.toISOString().slice(0, 10), // format yyyy-mm-dd
-      revenue: Number(item.revenue),
-    }));
+    return weeklyData;
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch revenue data.");
+    console.error('Error fetching revenue data:', error);
+    return [];
   }
 }
-
 export async function fetchTransactions() {
   try {
     const transactions = await prisma.transaction.findMany({
