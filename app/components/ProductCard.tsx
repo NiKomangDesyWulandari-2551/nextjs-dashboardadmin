@@ -126,11 +126,10 @@ export default function ProductCatalog({ products = [] }: ProductCatalogProps) {
         <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
           Katalog Produk
         </h1>
-        {/* <Search placeholder="Cari produk..." />
         <div className="mt-6 flow-root">
           <div className="overflow-x-auto">
             <div className="inline-block min-w-full align-middle">
-              <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0"> */}
+              <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
                 {/* Tampilan Mobile */}
                 <div className="md:hidden">
                   {products.length > 0 ? (
