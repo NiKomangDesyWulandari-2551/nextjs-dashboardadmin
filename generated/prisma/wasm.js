@@ -173,6 +173,14 @@ exports.Prisma.RevenueScalarFieldEnum = {
   invoiceId: 'invoiceId'
 };
 
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  buyerName: 'buyerName',
+  date: 'date',
+  totalPrice: 'totalPrice'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -194,7 +202,8 @@ exports.Prisma.ModelName = {
   Admin: 'Admin',
   Invoice: 'Invoice',
   InvoiceItem: 'InvoiceItem',
-  Revenue: 'Revenue'
+  Revenue: 'Revenue',
+  Transaction: 'Transaction'
 };
 
 /**

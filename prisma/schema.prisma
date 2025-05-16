@@ -19,6 +19,7 @@ model Product {
   categoryId   Int
   category     Category      @relation(fields: [categoryId], references: [id])
   invoiceItems InvoiceItem[]
+  transactions Transaction[]
 }
 
 model Category {
@@ -71,6 +72,15 @@ model Revenue {
   total      Int
   invoiceId  Int      @unique
   invoice    Invoice  @relation("InvoiceToRevenue", fields: [invoiceId], references: [id])
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement()) // id_transaksi
+  productId   Int                                       // id_produk
+  product     Product  @relation(fields: [productId], references: [id])
+  buyerName   String                                    // nama_pembeli
+  date        DateTime  @default(now())                 // tanggal
+  totalPrice  Int                                       // total_harga
 }
 
 enum Role {
