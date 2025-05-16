@@ -2,10 +2,10 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { lusitana } from '@/app/ui/font';
-import { fetchLatestInvoices } from '@/app/lib/data';
+import { fetchLatestInvoicesPrisma } from '@/app/lib/prisma';
 
 export default async function LatestInvoices() {
-  const latestInvoices = await fetchLatestInvoices();
+  const latestInvoices = await fetchLatestInvoicesPrisma();
  
   return (
     <div className="flex w-full flex-col md:col-span-4">

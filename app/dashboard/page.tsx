@@ -60,23 +60,25 @@ import { lacquer } from '../ui/font';
 import RevenueChart from '../ui/dashboard/revenue-chart';
 import LatestInvoices from '../ui/dashboard/latest-invoices';
 import ProductCatalog from '../components/ProductCard';
-import { fetchRevenuePrisma, fetchProducts } from '@/app/lib/prisma';
+import TransactionHistory from '../components/TransactionHistory';
+import { fetchRevenuePrisma, fetchLatestInvoicesPrisma, fetchProducts } from '@/app/lib/prisma';
 
 export default async function Page() {
-  let revenue = [];
-  // let latestInvoices = [];
-  let products = [];
+  let revenue: { week: string; revenue: number }[] = [];
+  let latestInvoices: LatestInvoice[] = [];
+  let products: { id: string; name: string; price: number }[] = [];
 
   try {
-    [revenue, products] = await Promise.all([
+    [revenue, latestInvoices, products] = await Promise.all([
       fetchRevenuePrisma(),
+      fetchLatestInvoicesPrisma(),
       fetchProducts(),
     ]);
   } catch (error) {
     console.error("Gagal mengambil data dashboard:", error);
     // Berikan nilai default untuk mencegah undefined
     revenue = [];
-    // latestInvoices = [];
+    latestInvoices = [];
     products = [];
   }
 
@@ -90,9 +92,12 @@ export default async function Page() {
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
         <RevenueChart revenue={revenue} />
-        {/* <LatestInvoices latestInvoices={latestInvoices} /> */}
+        <LatestInvoices latestInvoices={latestInvoices} /> 
       </div>
       <ProductCatalog products={products} />
+      <div className="mt-6">
+        <TransactionHistory />
+      </div>
     </main>
   );
 }
