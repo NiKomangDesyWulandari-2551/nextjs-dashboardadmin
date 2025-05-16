@@ -11,6 +11,7 @@ import { fetchRevenuePrisma } from '@/app/lib/prisma';
 //   soulCount: number;
 //   recentCount: number;
 //   banquetProgress: number;
+
 // }
 
 export default async function Page() {
