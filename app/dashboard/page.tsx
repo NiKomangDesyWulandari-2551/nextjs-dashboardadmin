@@ -61,38 +61,55 @@ import RevenueChart from '../ui/dashboard/revenue-chart';
 import LatestInvoices from '../ui/dashboard/latest-invoices';
 import ProductCatalog from '../components/ProductCard';
 import TransactionHistory from '../components/TransactionHistory';
-import { fetchRevenuePrisma, fetchLatestInvoicesPrisma, fetchProducts } from '@/app/lib/prisma';
+import { fetchRevenuePrisma, fetchLatestInvoicesPrisma, fetchProducts, fetchCardDataPrisma  } from '@/app/lib/prisma';
+
+// export default async function Page() {
+//   let revenue: { week: string; revenue: number }[] = [];
+//   let latestInvoices: LatestInvoice[] = [];
+//   let products: { id: string; name: string; price: number }[] = [];
+
+//   try {
+//     [revenue, latestInvoices, products] = await Promise.all([
+//       fetchRevenuePrisma(),
+//       fetchLatestInvoicesPrisma(),
+//       fetchProducts(),
+//     ]);
+//   } catch (error) {
+//     console.error("Gagal mengambil data dashboard:", error);
+//     // Berikan nilai default untuk mencegah undefined
+//     revenue = [];
+//     latestInvoices = [];
+//     products = [];
+//   }
 
 export default async function Page() {
-  let revenue: { week: string; revenue: number }[] = [];
-  let latestInvoices: LatestInvoice[] = [];
-  let products: { id: string; name: string; price: number }[] = [];
-
-  try {
-    [revenue, latestInvoices, products] = await Promise.all([
-      fetchRevenuePrisma(),
-      fetchLatestInvoicesPrisma(),
-      fetchProducts(),
-    ]);
-  } catch (error) {
-    console.error("Gagal mengambil data dashboard:", error);
-    // Berikan nilai default untuk mencegah undefined
-    revenue = [];
-    latestInvoices = [];
-    products = [];
-  }
-
+  const revenue = await fetchRevenuePrisma();
+  const latestInvoices = await fetchLatestInvoicesPrisma();
+  const {
+    numberOfInvoices,
+    numberOfCustomers,
+    totalPaidInvoices,
+    totalPendingInvoices,
+  } = await fetchCardDataPrisma();
+ 
   return (
     <main>
-      <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>
+      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard
       </h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {/* Komponen kartu lainnya jika ada */}
+        <Card title="Collected" value={totalPaidInvoices} type="collected" />
+        <Card title="Pending" value={totalPendingInvoices} type="pending" />
+        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+        <Card
+          title="Total Customers"
+          value={numberOfCustomers}
+          type="customers"
+        />
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
         <RevenueChart revenue={revenue} />
-        <LatestInvoices latestInvoices={latestInvoices} /> 
+        <LatestInvoices latestInvoices={latestInvoices} />
       </div>
       <ProductCatalog products={products} />
       <div className="mt-6">

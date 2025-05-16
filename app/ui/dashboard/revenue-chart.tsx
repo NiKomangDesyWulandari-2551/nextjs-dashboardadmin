@@ -72,7 +72,7 @@ export default async function RevenueChart() {
   return (
     <div className="w-full md:col-span-4">
       <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        Weekly Revenue
+        Month Revenue
       </h2>
 
       <div className="rounded-xl bg-gray-50 p-4 overflow-hidden">

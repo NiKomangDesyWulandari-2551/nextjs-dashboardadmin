@@ -162,38 +162,38 @@ export async function fetchLatestInvoicesPrisma(): Promise<LatestInvoice[]> {
   }
 }
 
-// export async function fetchCardDataPrisma() {
-//   try {
-//     const invoiceCountPromise = prisma.invoices.count();
-//     const customerCountPromise = prisma.customers.count();
-//     const invoiceStatusPromise = prisma.invoices.groupBy({
-//       by: ["status"],
-//       _sum: {
-//         amount: true,
-//       },
-//     });
+export async function fetchCardDataPrisma() {
+  try {
+    const invoiceCountPromise = prisma.invoices.count();
+    const customerCountPromise = prisma.customers.count();
+    const invoiceStatusPromise = prisma.invoices.groupBy({
+      by: ["status"],
+      _sum: {
+        amount: true,
+      },
+    });
 
-//     const data = await Promise.all([
-//       invoiceCountPromise,
-//       customerCountPromise,
-//       invoiceStatusPromise,
-//     ]);
+    const data = await Promise.all([
+      invoiceCountPromise,
+      customerCountPromise,
+      invoiceStatusPromise,
+    ]);
 
-//     const paid =
-//       data[2].find((status) => status.status === "paid")?._sum.amount || 0;
-//     const pending =
-//       data[2].find((status) => status.status === "pending")?._sum.amount || 0;
+    const paid =
+      data[2].find((status) => status.status === "paid")?._sum.amount || 0;
+    const pending =
+      data[2].find((status) => status.status === "pending")?._sum.amount || 0;
 
-//     return {
-//       numberOfCustomers: data[1],
-//       numberOfInvoices: data[0],
-//       totalPaidInvoices: formatCurrency(paid),
-//       totalPendingInvoices: formatCurrency(pending),
-//     };
-//   } catch (error) {
-//     console.error("Database Error:", error);
-//     throw new Error("Failed to fetch card data.");
-//   }
-// }
+    return {
+      numberOfCustomers: data[1],
+      numberOfInvoices: data[0],
+      totalPaidInvoices: formatCurrency(paid),
+      totalPendingInvoices: formatCurrency(pending),
+    };
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch card data.");
+  }
+}
 
 export default prisma;
