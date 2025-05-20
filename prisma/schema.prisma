@@ -89,5 +89,3 @@ enum Role {
   admin
   customer
 }
-
-
