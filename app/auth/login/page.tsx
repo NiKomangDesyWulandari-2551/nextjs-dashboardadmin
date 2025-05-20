@@ -21,7 +21,7 @@ export default function LoginPage() {
       console.log("Login Berhasil!");
       router.push("/dashboard"); 
     } else {
-      alert("Email atau password salah!");
+      alert("Emaill atau password salah!");
     }
   };
 
@@ -42,7 +42,7 @@ export default function LoginPage() {
           className="w-full h-full object-cover"
         />
       </div>
-      
+
       {/* Login Card */}
       <div className="relative z-10 bg-black bg-opacity-80 text-white p-8 rounded-lg shadow-lg w-96">
         <h2
