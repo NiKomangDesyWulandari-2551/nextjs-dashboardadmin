@@ -81,7 +81,7 @@ model Transaction {
   productId   Int                                       // id_produk
   product     Product  @relation(fields: [productId], references: [id])
   buyerName   String                                    // nama_pembeli
-  date        DateTime  @default(now())                 // tanggal
+  date        Date  @default(now())                 // tanggal
   totalPrice  Int                                       // total_harga
 }
 
