@@ -1,35 +1,61 @@
 import React from 'react';
-// import SoulCounter from '@/app/components/SoulCounter';
-// import RecentSouls from '@/app/components/RecentSouls';
-// import BanquetProgress from '@/app/components/BanquetProgress';
-// import RevenueChart from '../ui/dashboard/revenue-chart';
-// import LatestInvoices from '../ui/dashboard/latest-invoices';
-import { lacquer } from '../ui/font';
-// import { fetchRevenuePrisma } from '@/app/lib/prisma';
-
-// interface DashboardProps {
-//   soulCount: number;
-//   recentCount: number;
-//   banquetProgress: number;
-
-// }
+import RevenueChart from '@/app/ui/dashboard/revenue-chart';
+import { lacquer } from '@/app/ui/font';
 
 export default async function Page() {
-  // const revenue= await fetchRevenuePrisma();
-  return ( 
+  const res = await fetch('http://localhost:3000/api/revenue', {
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    return <p>Failed to load data</p>;
+  }
+
+  const revenue = await res.json();
+
+  return (
     <main>
-      <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>
-      </h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {}
-      </div>
-      <div className="mt-6 grid grid-cols-l gap-6 md:grid-cols-4 lg:grid-cols-8">
-        {/* {<RevenueChart revenue={revenue} />} */}
-        {/* {<LatestInvoices latestInvoices={latestInvoices} />} */}
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        {/* Passing revenue sebagai props ke RevenueChart */}
+        <RevenueChart revenue={revenue} />
       </div>
     </main>
   );
 }
+
+
+// import React from 'react';
+// // import SoulCounter from '@/app/components/SoulCounter';
+// // import RecentSouls from '@/app/components/RecentSouls';
+// // import BanquetProgress from '@/app/components/BanquetProgress';
+// import RevenueChart from '../ui/dashboard/revenue-chart';
+// // import LatestInvoices from '../ui/dashboard/latest-invoices';
+// import { lacquer } from '../ui/font';
+// // import { fetchRevenuePrisma } from '@/app/lib/prisma';
+
+// // interface DashboardProps {
+// //   soulCount: number;
+// //   recentCount: number;
+// //   banquetProgress: number;
+
+// // }
+
+// // export default async function Page() {
+// //   const revenue= await fetchRevenuePrisma();
+// //   return ( 
+// //     <main>
+// //       <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>
+// //       </h1>
+// //       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+// //         {}
+// //       </div>
+// //       <div className="mt-6 grid grid-cols-l gap-6 md:grid-cols-4 lg:grid-cols-8">
+// //         {<RevenueChart revenue={revenue} />}
+// //         {/* {<LatestInvoices latestInvoices={latestInvoices} />} */}
+// //       </div>
+// //     </main>
+// //   );
+// // }
 
 // const Dashboard: React.FC<DashboardProps> = ({ soulCount, recentCount, banquetProgress }) => {
 //   return (
