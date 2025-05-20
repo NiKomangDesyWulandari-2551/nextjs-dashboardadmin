@@ -190,7 +190,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/mnt/c/Users/USER/OneDrive/Documents/GitHub/nextjs-dashboardadmin/generated/prisma",
+      "value": "C:\\Users\\YOGA\\Documents\\SIWEBUGD\\nextjs-dashboard\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -199,12 +199,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/mnt/c/Users/USER/OneDrive/Documents/GitHub/nextjs-dashboardadmin/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\YOGA\\Documents\\SIWEBUGD\\nextjs-dashboard\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
