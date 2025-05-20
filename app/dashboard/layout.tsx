@@ -25,18 +25,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           rel="stylesheet"
         />
       </Head>
-      {/* Background Video */}
+      {/* Background Photo */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-        <video
+        <img
+          src="/Halloween wallpaper.jpeg" // Pastikan file ini ada di folder public
+          alt="Background"
           className="w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/latarbelakanggerak.mp4" type="video/mp4" />
-          Browser Anda tidak mendukung video tag.
-        </video>
+        />
       </div>
 
       {/* Sidebar */}

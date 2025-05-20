@@ -34,18 +34,15 @@ export default function LoginPage() {
           rel="stylesheet"
         />
       </Head>
-      {/* Background Video */}
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/latarbelakanggerak.mp4" type="video/mp4" />
-        Browser Anda tidak mendukung video tag.
-      </video>
-
+    {/* Background Photo */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+        <img
+          src="/Halloween wallpaper.jpeg" // Pastikan file ini ada di folder public
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
       {/* Login Card */}
       <div className="relative z-10 bg-black bg-opacity-80 text-white p-8 rounded-lg shadow-lg w-96">
         <h2
