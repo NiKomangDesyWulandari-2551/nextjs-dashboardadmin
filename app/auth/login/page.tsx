@@ -21,7 +21,7 @@ export default function LoginPage() {
       console.log("Login Berhasil!");
       router.push("/dashboard"); 
     } else {
-      alert("Emaill atau password salah!");
+      alert("Email atau password salah!");
     }
   };
 
