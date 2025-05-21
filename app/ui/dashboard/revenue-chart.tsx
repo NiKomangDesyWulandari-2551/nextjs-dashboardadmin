@@ -212,16 +212,16 @@ export default function RevenueChart({ revenue }: RevenueChartProps) {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-3 bg-gray-900 p-6 rounded-lg border-2 border-orange-600 shadow-xl relative">
+        <div className="lg:col-span-4 bg-gray-900 p-6 rounded-lg border-2 border-orange-600 shadow-xl relative">
           <div className="mb-6">
-            <h2 className={`${nosifer.className} text-3xl font-bold text-orange-500 mb-1 tracking-wider`}>
+            <h2 className={`${nosifer.className} text-2xl font-bold text-orange-500 mb-1 tracking-wider`}>
               The Revenant Revenue
             </h2>
             <div className="h-1 w-36 bg-gradient-to-r from-orange-600 to-purple-700 rounded"></div>
           </div>
 
           {/* Chart */}
-          <div className="relative bg-gray-800 rounded-md p-4 flex items-end justify-between h-[400px] z-20">
+          <div className="relative bg-gray-800 rounded-md p-2 flex items-end justify-between h-[400px] z-20">
             {revenue.map((month, index) => (
               <div
                 key={`${month.id}-${index}`}

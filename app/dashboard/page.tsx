@@ -20,25 +20,29 @@ export default async function Page() {
   const revenueData = await revenueRes.json();
 
   return (
-    <main>
-      <div className="flex flex-nowrap overflow-x-auto space-x-6 mb-8 pb-4">
-        <Cards
-          totalCustomers={cardsData.totalCustomers}
-          totalRevenue={cardsData.totalRevenue}
-          totalProducts={cardsData.totalProducts}
-          totalTransactions={cardsData.totalTransactions}
-        />
-      </div>
+  <main>
+    <div className="flex flex-nowrap overflow-x-auto space-x-6 mb-8 pb-4">
+      <Cards
+        totalCustomers={cardsData.totalCustomers}
+        totalRevenue={cardsData.totalRevenue}
+        totalProducts={cardsData.totalProducts}
+        totalTransactions={cardsData.totalTransactions}
+      />
+    </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        {/* <h2 className="text-lg font-semibold mb-4">Recent Invoices</h2> */}
-        <div className="overflow-x-auto">
+    <div className="rounded-lg shadow p-6">
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="lg:w-2/2 w-full">
           <RevenueChart revenue={revenueData} />
+        </div>
+        <div className="lg:w-2/2 w-full">
           <LatestInvoices />
         </div>
       </div>
-    </main>
-  );
+    </div>
+  </main>
+);
+
 }
 
 
