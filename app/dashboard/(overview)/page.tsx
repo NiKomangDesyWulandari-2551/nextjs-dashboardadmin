@@ -19,7 +19,7 @@ export default async function Page() {
     return <p className="text-red-500">Gagal memuat data revenue.</p>;
   }
   const revenueData = await revenueRes.json();
-
+  // console.log(revenueData)
 
   return (
   <main>

@@ -423,6 +423,7 @@ export default function DrinkPage() {
         const res = await fetch('/api/products?category=drink');
         if (!res.ok) throw new Error('Failed to fetch products');
         const data = await res.json();
+        console.log(data)
         setProducts(data);
       } catch (error) {
         setError('Gagal memuat produk. Coba lagi nanti.');
