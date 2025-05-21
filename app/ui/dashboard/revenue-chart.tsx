@@ -180,49 +180,170 @@
 // //   );
 // // }
 
+// 'use client';
+
+// import React, { useState } from 'react';
+// import { nosifer } from '@/app/ui/font';
+// import { generateYAxis } from '@/app/lib/utils';
+
+// interface RevenueChartProps {
+//   revenue?: { id: string; month: string; revenue: number }[]; // bisa optional
+// }
+
+// export default function RevenueChart({ revenue }: RevenueChartProps) {
+//   // Pastikan revenue adalah array dan ada isinya sebelum generate Y axis dan render chart
+//   if (!Array.isArray(revenue) || revenue.length === 0) {
+//     return <p className="mt-4 text-gray-400">Data tidak tersedia.</p>;
+//   }
+
+//   const chartHeight = 350;
+//   const { yAxisLabels, topLabel } = generateYAxis(revenue);
+//   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
+
+//   return (
+//     <div>
+//       {/* Floating Halloween Elements */}
+//       <div className="fixed inset-0 pointer-events-none overflow-hidden z-10">
+//         <div className="absolute top-20 left-10 text-6xl animate-bounce">🎃</div>
+//         <div className="absolute top-40 right-20 text-4xl animate-pulse">👻</div>
+//         <div className="absolute bottom-20 left-20 text-5xl animate-spin">🦇</div>
+//         <div className="absolute top-60 left-1/2 text-3xl animate-bounce">🕷️</div>
+//       </div>
+
+//       {/* Charts */}
+//       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+//         <div className="lg:col-span-4 bg-gray-900 p-6 rounded-lg border-2 border-orange-600 shadow-xl relative">
+//           <div className="mb-6">
+//             <h2 className={`${nosifer.className} text-2xl font-bold text-orange-500 mb-1 tracking-wider`}>
+//               The Revenant Revenue
+//             </h2>
+//             <div className="h-1 w-36 bg-gradient-to-r from-orange-600 to-purple-700 rounded"></div>
+//           </div>
+
+//           {/* Chart */}
+//           <div className="relative bg-gray-800 rounded-md p-2 flex items-end justify-between h-[400px] z-20">
+//             {revenue.map((month, index) => (
+//               <div
+//                 key={`${month.id}-${index}`}
+//                 className="flex flex-col items-center gap-2 w-full"
+//                 onMouseEnter={() => setHoveredBarIndex(index)}
+//                 onMouseLeave={() => setHoveredBarIndex(null)}
+//               >
+//                 <div
+//                   className={`w-6 sm:w-8 rounded-t-md transition-all duration-300 relative ${
+//                     hoveredBarIndex === index ? 'opacity-100 shadow-lg shadow-orange-500/30' : 'opacity-90'
+//                   }`}
+//                   style={{
+//                     height: `${(chartHeight / topLabel) * month.revenue}px`,
+//                     background: 'linear-gradient(to bottom, #FF6000, #7C3AED)',
+//                     filter:
+//                       hoveredBarIndex === index
+//                         ? 'drop-shadow(0 0 8px rgba(234, 88, 12, 0.5))'
+//                         : 'none',
+//                   }}
+//                 >
+//                   {hoveredBarIndex === index && (
+//                     <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-orange-900 text-orange-100 p-2 rounded border border-orange-500 shadow-lg z-30 whitespace-nowrap">
+//                       <p className="font-bold">{month.month}</p>
+//                       <p className="text-orange-200">${month.revenue.toLocaleString()}</p>
+//                     </div>
+//                   )}
+//                 </div>
+//                 <p className="-rotate-90 sm:rotate-0 text-sm text-gray-400 mt-2">{month.month}</p>
+//               </div>
+//             ))}
+//           </div>
+
+//           {/* Decorative Elements */}
+//           <div className="absolute top-0 right-0 w-32 h-32 opacity-20 pointer-events-none">
+//             <svg viewBox="0 0 100 100" className="w-full h-full">
+//               <path
+//                 d="M0,50 L100,50 M50,0 L50,100 M0,0 L100,100 M100,0 L0,100 M25,0 L25,100 M75,0 L75,100 M0,25 L100,25 M0,75 L100,75"
+//                 stroke="white"
+//                 strokeWidth="0.5"
+//                 fill="none"
+//               />
+//             </svg>
+//           </div>
+
+//           <div className="absolute -top-3 left-1/4 w-2 h-6 bg-red-700 rounded-b-full"></div>
+//           <div className="absolute -top-2 left-1/3 w-1 h-4 bg-red-800 rounded-b-full"></div>
+//           <div className="absolute -top-4 left-2/3 w-3 h-8 bg-red-900 rounded-b-full"></div>
+//           <div className="absolute -top-3 right-1/4 w-2 h-5 bg-red-700 rounded-b-full"></div>
+//           <div className="absolute bottom-12 left-6 w-1 h-4 bg-red-800 rounded-b-full"></div>
+//           <div className="absolute bottom-12 right-6 w-2 h-5 bg-red-900 rounded-b-full"></div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { nosifer } from '@/app/ui/font';
 import { generateYAxis } from '@/app/lib/utils';
 
-interface RevenueChartProps {
-  revenue?: { id: string; month: string; revenue: number }[]; // bisa optional
+interface Revenue {
+  id: string;
+  month: string;
+  revenue: number;
 }
 
-export default function RevenueChart({ revenue }: RevenueChartProps) {
-  // Pastikan revenue adalah array dan ada isinya sebelum generate Y axis dan render chart
-  if (!Array.isArray(revenue) || revenue.length === 0) {
-    return <p className="mt-4 text-gray-400">Data tidak tersedia.</p>;
-  }
+function SkeletonChart() {
+  return (
+    <div className="relative bg-gray-800 rounded-md p-2 flex items-end justify-between h-[400px] z-20 animate-pulse">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="flex flex-col items-center gap-2 w-full">
+          <div className="w-6 sm:w-8 h-32 bg-gray-700 rounded-t-md" />
+          <div className="h-3 w-8 bg-gray-600 rounded" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  const chartHeight = 350;
-  const { yAxisLabels, topLabel } = generateYAxis(revenue);
+export default function RevenueChart() {
+  const [revenueData, setRevenueData] = useState<Revenue[] | null>(null);
   const [hoveredBarIndex, setHoveredBarIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    async function fetchRevenue() {
+      try {
+        await new Promise((res) => setTimeout(res, 3000)); // optional delay
+        const res = await fetch('/api/revenue', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to fetch revenue');
+        const data: Revenue[] = await res.json();
+        setRevenueData(data);
+      } catch (error) {
+        console.error('Error fetching revenue:', error);
+        setRevenueData([]);
+      }
+    }
+
+    fetchRevenue();
+  }, []);
+
+  const chartHeight = 350;
+  const { yAxisLabels, topLabel } = generateYAxis(revenueData || []);
+
   return (
-    <div>
-      {/* Floating Halloween Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-10">
-        <div className="absolute top-20 left-10 text-6xl animate-bounce">🎃</div>
-        <div className="absolute top-40 right-20 text-4xl animate-pulse">👻</div>
-        <div className="absolute bottom-20 left-20 text-5xl animate-spin">🦇</div>
-        <div className="absolute top-60 left-1/2 text-3xl animate-bounce">🕷️</div>
-      </div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="lg:col-span-4 bg-gray-900 p-6 rounded-lg border-2 border-orange-600 shadow-xl relative">
+        <div className="mb-6">
+          <h2 className={`${nosifer.className} text-2xl font-bold text-orange-500 mb-1 tracking-wider`}>
+            The Revenant Revenue
+          </h2>
+          <div className="h-1 w-36 bg-gradient-to-r from-orange-600 to-purple-700 rounded" />
+        </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-4 bg-gray-900 p-6 rounded-lg border-2 border-orange-600 shadow-xl relative">
-          <div className="mb-6">
-            <h2 className={`${nosifer.className} text-2xl font-bold text-orange-500 mb-1 tracking-wider`}>
-              The Revenant Revenue
-            </h2>
-            <div className="h-1 w-36 bg-gradient-to-r from-orange-600 to-purple-700 rounded"></div>
-          </div>
-
-          {/* Chart */}
+        {revenueData === null ? (
+          <SkeletonChart />
+        ) : revenueData.length === 0 ? (
+          <p className="text-gray-400 text-lg mt-10">No revenants rose this month. Revenue data is empty.</p>
+        ) : (
           <div className="relative bg-gray-800 rounded-md p-2 flex items-end justify-between h-[400px] z-20">
-            {revenue.map((month, index) => (
+            {revenueData.map((month, index) => (
               <div
                 key={`${month.id}-${index}`}
                 className="flex flex-col items-center gap-2 w-full"
@@ -253,26 +374,15 @@ export default function RevenueChart({ revenue }: RevenueChartProps) {
               </div>
             ))}
           </div>
+        )}
 
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 opacity-20 pointer-events-none">
-            <svg viewBox="0 0 100 100" className="w-full h-full">
-              <path
-                d="M0,50 L100,50 M50,0 L50,100 M0,0 L100,100 M100,0 L0,100 M25,0 L25,100 M75,0 L75,100 M0,25 L100,25 M0,75 L100,75"
-                stroke="white"
-                strokeWidth="0.5"
-                fill="none"
-              />
-            </svg>
-          </div>
-
-          <div className="absolute -top-3 left-1/4 w-2 h-6 bg-red-700 rounded-b-full"></div>
-          <div className="absolute -top-2 left-1/3 w-1 h-4 bg-red-800 rounded-b-full"></div>
-          <div className="absolute -top-4 left-2/3 w-3 h-8 bg-red-900 rounded-b-full"></div>
-          <div className="absolute -top-3 right-1/4 w-2 h-5 bg-red-700 rounded-b-full"></div>
-          <div className="absolute bottom-12 left-6 w-1 h-4 bg-red-800 rounded-b-full"></div>
-          <div className="absolute bottom-12 right-6 w-2 h-5 bg-red-900 rounded-b-full"></div>
-        </div>
+        {/* Blood drops decoration */}
+        <div className="absolute -top-3 left-1/4 w-2 h-6 bg-red-700 rounded-b-full"></div>
+        <div className="absolute -top-2 left-1/3 w-1 h-4 bg-red-800 rounded-b-full"></div>
+        <div className="absolute -top-4 left-2/3 w-3 h-8 bg-red-900 rounded-b-full"></div>
+        <div className="absolute -top-3 right-1/4 w-2 h-5 bg-red-700 rounded-b-full"></div>
+        <div className="absolute bottom-12 left-6 w-1 h-4 bg-red-800 rounded-b-full"></div>
+        <div className="absolute bottom-12 right-6 w-2 h-5 bg-red-900 rounded-b-full"></div>
       </div>
     </div>
   );

@@ -29,6 +29,112 @@ export function CardsSkeleton() {
   );
 }
 
+// Tambahkan setelah komponen CardSkeleton
+export function DrinkSkeleton() {
+  return (
+    <div
+      className={`${shimmer} relative overflow-hidden rounded-xl bg-gray-100 p-2 shadow-sm`}
+    >
+      <div className="flex p-4">
+        <div className="h-16 w-16 rounded-md bg-gray-200" />
+        <div className="ml-4 flex flex-col justify-between">
+          <div className="h-6 w-24 rounded-md bg-gray-200 mb-2" />
+          <div className="h-4 w-16 rounded-md bg-gray-200" />
+        </div>
+      </div>
+      <div className="px-4 pb-4">
+        <div className="h-4 w-full rounded-md bg-gray-200 mb-2" />
+        <div className="h-4 w-2/3 rounded-md bg-gray-200" />
+      </div>
+    </div>
+  );
+}
+
+export function DrinksSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <DrinkSkeleton />
+      <DrinkSkeleton />
+      <DrinkSkeleton />
+      <DrinkSkeleton />
+      <DrinkSkeleton />
+      <DrinkSkeleton />
+      <DrinkSkeleton />
+      <DrinkSkeleton />
+    </div>
+  );
+}
+
+export function FoodSkeleton() {
+  return (
+    <div
+      className={`${shimmer} relative overflow-hidden rounded-xl bg-gray-100 p-2 shadow-sm`}
+    >
+      <div className="flex p-4">
+        <div className="h-16 w-16 rounded-md bg-gray-200" />
+        <div className="ml-4 flex flex-col justify-between">
+          <div className="h-6 w-24 rounded-md bg-gray-200 mb-2" />
+          <div className="h-4 w-16 rounded-md bg-gray-200" />
+        </div>
+      </div>
+      <div className="px-4 pb-4">
+        <div className="h-4 w-full rounded-md bg-gray-200 mb-2" />
+        <div className="h-4 w-2/3 rounded-md bg-gray-200" />
+      </div>
+    </div>
+  );
+}
+
+export function FoodsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <FoodSkeleton />
+      <FoodSkeleton />
+      <FoodSkeleton />
+      <FoodSkeleton />
+      <FoodSkeleton />
+      <FoodSkeleton />
+      <FoodSkeleton />
+      <FoodSkeleton />
+    </div>
+  );
+}
+
+
+export function TransactionSkeleton() {
+  return (
+    <div
+      className={`${shimmer} relative overflow-hidden rounded-xl bg-gray-100 p-2 shadow-sm`}
+    >
+      <div className="flex p-4">
+        <div className="h-16 w-16 rounded-md bg-gray-200" />
+        <div className="ml-4 flex flex-col justify-between">
+          <div className="h-6 w-24 rounded-md bg-gray-200 mb-2" />
+          <div className="h-4 w-16 rounded-md bg-gray-200" />
+        </div>
+      </div>
+      <div className="px-4 pb-4">
+        <div className="h-4 w-full rounded-md bg-gray-200 mb-2" />
+        <div className="h-4 w-2/3 rounded-md bg-gray-200" />
+      </div>
+    </div>
+  );
+}
+
+export function TransactionsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <TransactionSkeleton />
+      <TransactionSkeleton />
+      <TransactionSkeleton />
+      <TransactionSkeleton />
+      <TransactionSkeleton />
+      <TransactionSkeleton />
+      <TransactionSkeleton />
+    </div>
+  );
+}
+
 export function RevenueChartSkeleton() {
   return (
     <div className={`${shimmer} relative w-full overflow-hidden md:col-span-4`}>
