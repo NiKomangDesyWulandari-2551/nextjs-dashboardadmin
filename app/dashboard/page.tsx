@@ -1,69 +1,84 @@
 import React from 'react';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
-import CardWrapper from '../ui/dashboard/cards';
+import Cards from '@/app/ui/dashboard/cards';
 import { lacquer } from '@/app/ui/font';
 
 export default async function Page() {
-  const res = await fetch('http://localhost:3000/api/revenue', {
-    cache: 'no-store',
-  });
-
-  if (!res.ok) {
-    return <p>Failed to load revenue data</p>;
+  // Fetch data untuk cards
+  const cardsRes = await fetch('http://localhost:3000/api/cards', { cache: 'no-store' });
+  if (!cardsRes.ok) {
+    return <p className="text-red-500">Gagal memuat data kartu.</p>;
   }
+  const cardsData = await cardsRes.json();
 
-  const revenue = await res.json();
+  // Fetch data untuk revenue chart
+  const revenueRes = await fetch('http://localhost:3000/api/revenue', { cache: 'no-store' });
+  if (!revenueRes.ok) {
+    return <p className="text-red-500">Gagal memuat data revenue.</p>;
+  }
+  const revenueData = await revenueRes.json();
 
   return (
     <main>
-       <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>Dashboard</h1>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <CardWrapper />
+      <div className="flex flex-nowrap overflow-x-auto space-x-6 mb-8 pb-4">
+        <Cards
+          totalCustomers={cardsData.totalCustomers}
+          totalRevenue={cardsData.totalRevenue}
+          totalProducts={cardsData.totalProducts}
+          totalTransactions={cardsData.totalTransactions}
+        />
       </div>
-      <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>Dashboard</h1>
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        <RevenueChart revenue={revenue} />
-        <LatestInvoices />
+
+      <div className="bg-white rounded-lg shadow p-6">
+        {/* <h2 className="text-lg font-semibold mb-4">Recent Invoices</h2> */}
+        <div className="overflow-x-auto">
+          <RevenueChart revenue={revenueData} />
+          <LatestInvoices />
+        </div>
       </div>
     </main>
   );
 }
 
+
 // import React from 'react';
 // import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 // import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+// import Cards from '@/app/ui/dashboard/cards';
 // import { lacquer } from '@/app/ui/font';
-// import { fetchCardData } from '@/app/lib/data/fetchCardData';
-// import Card from '@/app/ui/dashboard/cards';
 
 // export default async function Page() {
-//   const res = await fetch('http://localhost:3000/api/revenue', {
+//   // Fetch revenue data
+//   const revenueRes = await fetch('http://localhost:3000/api/revenue', {
 //     cache: 'no-store',
 //   });
+//   if (!revenueRes.ok) return <p>Failed to load revenue data</p>;
+//   const revenue = await revenueRes.json();
 
-//   if (!res.ok) {
-//     return <p>Failed to load revenue data</p>;
-//   }
-
-//   const revenue = await res.json();
-//   const cardData = await fetchCardData();
+//   // Fetch card data
+//   const cardsRes = await fetch('http://localhost:3000/api/dashboard-cards', {
+//     cache: 'no-store',
+//   });
+//   if (!cardsRes.ok) return <p>Failed to load dashboard cards data</p>;
+//   const cardData = await cardsRes.json();
 
 //   return (
 //     <main>
 //       <h1 className={`${lacquer.className} mb-4 text-xl md:text-2xl`}>Dashboard</h1>
-      
-//       {/* Cards */}
-//       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-//         <Card title="Customers" value={cardData.totalCustomers} />
-//         <Card title="Revenue" value={`Rp${cardData.totalRevenue.toLocaleString()}`} />
-//         <Card title="Products" value={cardData.totalProducts} />
-//         <Card title="Transactions" value={cardData.totalTransactions} />
-//       </div>
-
-//       {/* Chart + Invoices */}
 //       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+//         {/* Render cards with data from server */}
+//         <Cards
+//           numberOfInvoices={cardData.numberOfInvoices}
+//           numberOfCustomers={cardData.numberOfCustomers}
+//           totalPaidInvoices={cardData.totalPaidInvoices}
+//           totalPendingInvoices={cardData.totalPendingInvoices}
+//         />
+
+//         {/* Revenue chart */}
 //         <RevenueChart revenue={revenue} />
+
+//         {/* Client component, fetches own data */}
 //         <LatestInvoices />
 //       </div>
 //     </main>

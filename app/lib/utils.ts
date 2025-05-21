@@ -34,28 +34,23 @@ export const formatDateToLocal = (
 
 //   return { yAxisLabels, topLabel };
 // };
-
-export const generateYAxis = (revenue: Revenue[]) => {
-  const yAxisLabels: string[] = [];
-  const highestRevenue = Math.max(...revenue.map((item) => item.revenue));
-
-  // Pembulatan ke atas ke kelipatan 1000
-  const topLabel = Math.ceil(highestRevenue / 1000) * 1000;
-
-  // Tentukan maksimal 6 label Y-axis
-  const maxLabels = 6;
-  const rawInterval = topLabel / maxLabels;
-
-  // Bulatkan interval ke kelipatan 1000 terdekat (biar tetap terlihat rapi)
-  const interval = Math.ceil(rawInterval / 1000) * 1000;
-
-  for (let i = topLabel; i >= 0; i -= interval) {
-    yAxisLabels.push(`$${i / 1000}K`);
+export function generateYAxis(revenue: { id: string; month: string; revenue: number }[]) {
+  // Cek apakah revenue adalah array dan ada isinya
+  if (!Array.isArray(revenue) || revenue.length === 0) {
+    return { yAxisLabels: [], topLabel: 1 };
   }
 
-  return { yAxisLabels, topLabel };
-};
+  const maxRevenue = Math.max(...revenue.map((item) => item.revenue), 0);
+  const labelCount = 5;
+  const step = Math.ceil(maxRevenue / labelCount);
 
+  const yAxisLabels = Array.from({ length: labelCount + 1 }, (_, i) => i * step);
+
+  return {
+    yAxisLabels,
+    topLabel: yAxisLabels[yAxisLabels.length - 1] || 1,
+  };
+}
 
 
 export const generatePagination = (currentPage: number, totalPages: number) => {

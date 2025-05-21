@@ -1,5 +1,5 @@
 // import { NextResponse } from 'next/server';
-// import { prisma } from 'app/lib/prisma';
+// import { prisma } from '@/lib/prisma';
 
 // export async function GET() {
 //   try {
@@ -21,26 +21,33 @@
 //   }
 // }
 
-// File: app/api/dashboard/cards/route.ts
 import { NextResponse } from 'next/server';
-import { prisma } from '@/app/lib/prisma';
+import { Pool } from 'pg';
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export async function GET() {
   try {
-    // Hitung jumlah customer
-    const totalCustomers = await prisma.customer.count();
+    const client = await pool.connect();
+    const customersQuery = `SELECT COUNT(*) FROM "Customer"`;
+    const customersResult = await client.query(customersQuery);
+    const totalCustomers = Number(customersResult.rows[0].count);
 
-    // Hitung total revenue (jumlah total pembayaran)
-    const totalRevenueAgg = await prisma.revenue.aggregate({
-      _sum: { total: true },
-    });
-    const totalRevenue = totalRevenueAgg._sum.total || 0;
+    const revenueQuery = `SELECT COALESCE(SUM(total), 0) AS total_revenue FROM "Revenue"`;
+    const revenueResult = await client.query(revenueQuery);
+    const totalRevenue = Number(revenueResult.rows[0].total_revenue);
 
-    // Hitung total produk
-    const totalProducts = await prisma.product.count();
+    const productsQuery = `SELECT COUNT(*) FROM "Product"`;
+    const productsResult = await client.query(productsQuery);
+    const totalProducts = Number(productsResult.rows[0].count);
 
-    // Hitung total transaksi
-    const totalTransactions = await prisma.transaction.count();
+    const transactionsQuery = `SELECT COUNT(*) FROM "Transaction"`;
+    const transactionsResult = await client.query(transactionsQuery);
+    const totalTransactions = Number(transactionsResult.rows[0].count);
+
+    client.release();
 
     return NextResponse.json({
       totalCustomers,
@@ -49,10 +56,7 @@ export async function GET() {
       totalTransactions,
     });
   } catch (error) {
-    console.error('Failed to fetch dashboard cards data:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch dashboard cards data' },
-      { status: 500 }
-    );
+    console.error('Error fetching cards data:', error);
+    return NextResponse.json({ error: 'Gagal mengambil data kartu' }, { status: 500 });
   }
 }
