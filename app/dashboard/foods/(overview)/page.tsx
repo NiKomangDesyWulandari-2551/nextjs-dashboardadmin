@@ -381,8 +381,21 @@
 // }
 
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { FoodSkeleton } from '@/app/ui/skeletons';
+import Search from '@/app/ui/search';
+
+
+// export default async function Page(props: {
+//   SearchParams?: Promise<{
+//     query?: string;
+//     page?: string;
+//   }>;
+// }) {
+//   const searchParams = await props.searchParams;
+//   const query = searchParams?.query || '';
+//   const currentPage = Number(searchParams?.page) || 1;
+// }
 
 interface Product {
   id: number;
@@ -491,6 +504,14 @@ export default function FoodPage() {
         <div className="absolute top-1/2 left-1/3 text-5xl animate-pulse">👻</div>
         <div className="absolute bottom-10 right-10 text-5xl animate-bounce">💀</div>
       </div>
+
+      <div className="mt-4 flext items-center justify-bettween gap-2 md:mt-8">
+        <Search placeholder="secarch food..." />
+      </div>
+
+      {/* <Suspense key={query + currentPage} fallback={<FoodSkeleton />}>
+        <Tabel query={query} currentPage={currentPage} />
+      </Suspense> */}
 
       {/* Particle FX */}
       <div className="absolute inset-0 z-0 pointer-events-none">
