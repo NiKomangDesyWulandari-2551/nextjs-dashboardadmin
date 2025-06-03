@@ -382,6 +382,7 @@
 
 'use client';
 import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FoodSkeleton } from '@/app/ui/skeletons';
 import Search from '@/app/ui/search';
 
@@ -409,6 +410,9 @@ interface Product {
 }
 
 export default function FoodPage() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') ?? '';
+
   const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
@@ -420,6 +424,39 @@ export default function FoodPage() {
   const [particles, setParticles] = useState<
     { left: string; top: string; delay: string; duration: string }[]
   >([]);
+
+    // Fetch data function
+  const fetchProducts = async () => {
+    try {
+      setIsLoading(true);
+      const url = `/api/products?category=food&search=${encodeURIComponent(search)}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch products');
+      const data = await res.json();
+      setProducts(data);
+      setError(null);
+    } catch (e) {
+      setError('Gagal memuat produk. Coba lagi nanti.');
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+    useEffect(() => {
+    fetchProducts();
+  }, [search]);
+
+  // Particle effect initialization
+  useEffect(() => {
+    const generated = Array.from({ length: 25 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 5}s`,
+      duration: `${3 + Math.random() * 4}s`,
+    }));
+    setParticles(generated);
+  }, []);
 
   // Durasi minimum skeleton (dalam milidetik)
   const MINIMUM_SKELETON_DURATION = 2000; // 2 detik
