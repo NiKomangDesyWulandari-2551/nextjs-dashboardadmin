@@ -37,55 +37,228 @@
 // }
 
 
-import { NextResponse } from 'next/server';
-import { Pool } from 'pg';
+// import { NextResponse } from 'next/server';
+// import { Pool } from 'pg';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const category = searchParams.get('category'); // ?category=Drink
-  const search = searchParams.get('search');     // ?search=tea
+// export async function GET(request: Request) {
+//   const { searchParams } = new URL(request.url);
+//   const category = searchParams.get('category'); // ?category=Drink
+//   const search = searchParams.get('search');     // ?search=tea
 
-  try {
-    const client = await pool.connect();
+//   try {
+//     const client = await pool.connect();
 
-    let query = `
-      SELECT p.id, p.name, p.price, p.image, p.description, c.name as category
-      FROM "Product" p
-      JOIN "Category" c ON p."categoryId" = c.id
-    `;
+//     let query = `
+//       SELECT p.id, p.name, p.price, p.image, p.description, c.name as category
+//       FROM "Product" p
+//       JOIN "Category" c ON p."categoryId" = c.id
+//     `;
 
-    const conditions: string[] = [];
-    const values: any[] = [];
+//     const conditions: string[] = [];
+//     const values: any[] = [];
 
-    if (category) {
-      conditions.push(`c.name = $${values.length + 1}`);
-      values.push(category);
-    }
+//     if (category) {
+//       conditions.push(`c.name = $${values.length + 1}`);
+//       values.push(category);
+//     }
 
-    if (search) {
-      conditions.push(`LOWER(p.name) LIKE LOWER($${values.length + 1})`);
-      values.push(`%${search}%`);
-    }
+//     if (search) {
+//       conditions.push(`LOWER(p.name) LIKE LOWER($${values.length + 1})`);
+//       values.push(`%${search}%`);
+//     }
 
-    if (conditions.length > 0) {
-      query += ` WHERE ` + conditions.join(' AND ');
-    }
+//     if (conditions.length > 0) {
+//       query += ` WHERE ` + conditions.join(' AND ');
+//     }
 
-    query += ` ORDER BY p."createdAt" DESC`;
+//     query += ` ORDER BY p."createdAt" DESC`;
 
-    const result = await client.query(query, values);
-    client.release();
+//     const result = await client.query(query, values);
+//     client.release();
 
-    return NextResponse.json(result.rows);
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
-  }
-}
+//     return NextResponse.json(result.rows);
+//   } catch (error) {
+//     console.error('Error fetching products:', error);
+//     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+//   }
+// }
+
+// import { NextResponse } from 'next/server';
+// import { Pool } from 'pg';
+
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
+
+// // GET: Ambil produk berdasarkan category dan search
+// export async function GET(req: Request) {
+//   try {
+//     const { searchParams } = new URL(req.url);
+//     const search = searchParams.get('search')?.toLowerCase() ?? '';
+//     const category = searchParams.get('category');
+
+//     const client = await pool.connect();
+
+//     let query = `
+//       SELECT
+//         p.id,
+//         p.name,
+//         p.price,
+//         p.image,
+//         p.description,
+//         p.stock,
+//         p.status,
+//         c.name AS category
+//       FROM "Product" p
+//       JOIN "Category" c ON p."categoryId" = c.id
+//       WHERE
+//         (LOWER(p.name) LIKE $1 OR CAST(p.id AS TEXT) LIKE $1)
+//     `;
+//     const values = [`%${search}%`];
+
+//     if (category) {
+//       query += ` AND c.name = $2`;
+//       values.push(category);
+//     }
+
+//     query += ` ORDER BY p."createdAt" DESC`;
+
+//     const result = await client.query(query, values);
+//     client.release();
+
+//     return NextResponse.json(result.rows);
+//   } catch (error) {
+//     console.error('Error fetching products:', error);
+//     return NextResponse.json({ error: 'Gagal mengambil data produk' }, { status: 500 });
+//   }
+// }
+
+// // POST: Tambah produk baru
+// export async function POST(req: Request) {
+//   try {
+//     const { name, price, image, description, stock, status, categoryId } = await req.json();
+
+//     if (!name || !price || !categoryId || stock == null || !status) {
+//       return NextResponse.json({ error: 'Semua field harus diisi' }, { status: 400 });
+//     }
+
+//     const client = await pool.connect();
+
+//     const insertQuery = `
+//       INSERT INTO "Product" (name, price, image, description, stock, status, "categoryId")
+//       VALUES ($1, $2, $3, $4, $5, $6, $7)
+//       RETURNING *
+//     `;
+//     const values = [name, price, image, description, stock, status, categoryId];
+
+//     const result = await client.query(insertQuery, values);
+//     client.release();
+
+//     return NextResponse.json(result.rows[0]);
+//   } catch (error) {
+//     console.error('Error inserting product:', error);
+//     return NextResponse.json({ error: 'Gagal menambahkan produk' }, { status: 500 });
+//   }
+// }
+
+// // PUT: Update produk berdasarkan ID
+// export async function PUT(req: Request) {
+//   try {
+//     const { id, name, price, image, description, stock, status, categoryId } = await req.json();
+
+//     // Log input untuk debugging
+//     console.log('Received PUT request body:', { id, name, price, image, description, stock, status, categoryId });
+
+//     // Validasi hanya untuk field yang wajib
+//     if (!id || !name || !price || !categoryId || stock == null || !status) {
+//       const missingFields = [];
+//       if (!id) missingFields.push('id');
+//       if (!name) missingFields.push('name');
+//       if (!price) missingFields.push('price');
+//       if (!categoryId) missingFields.push('categoryId');
+//       if (stock == null) missingFields.push('stock');
+//       if (!status) missingFields.push('status');
+
+//       return NextResponse.json(
+//         { error: `Field berikut harus diisi: ${missingFields.join(', ')}` },
+//         { status: 400 }
+//       );
+//     }
+
+//     const client = await pool.connect();
+
+//     const updateQuery = `
+//       UPDATE "Product"
+//       SET name = $1,
+//           price = $2,
+//           image = $3,
+//           description = $4,
+//           stock = $5,
+//           status = $6,
+//           "categoryId" = $7
+//       WHERE id = $8
+//       RETURNING *
+//     `;
+//     const values = [
+//       name,
+//       price,
+//       image || null, // Izinkan image opsional
+//       description || null, // Izinkan description opsional
+//       stock,
+//       status,
+//       categoryId,
+//       id
+//     ];
+
+//     const result = await client.query(updateQuery, values);
+//     client.release();
+
+//     if (result.rowCount === 0) {
+//       return NextResponse.json({ error: 'Produk tidak ditemukan' }, { status: 404 });
+//     }
+
+//     return NextResponse.json(result.rows[0]);
+//   } catch (error) {
+//     console.error('Error updating product:', error);
+//     return NextResponse.json({ error: 'Gagal mengupdate produk' }, { status: 500 });
+//   }
+// }
+
+// // DELETE: Hapus produk berdasarkan ID
+// export async function DELETE(req: Request) {
+//   try {
+//     const { searchParams } = new URL(req.url);
+//     const id = searchParams.get('id');
+
+//     if (!id) {
+//       return NextResponse.json({ error: 'ID produk harus disertakan' }, { status: 400 });
+//     }
+
+//     const client = await pool.connect();
+
+//     const deleteQuery = `
+//       DELETE FROM "Product"
+//       WHERE id = $1
+//       RETURNING *
+//     `;
+//     const result = await client.query(deleteQuery, [id]);
+//     client.release();
+
+//     if (result.rowCount === 0) {
+//       return NextResponse.json({ error: 'Produk tidak ditemukan' }, { status: 404 });
+//     }
+
+//     return NextResponse.json({ message: 'Produk berhasil dihapus' });
+//   } catch (error) {
+//     console.error('Error deleting product:', error);
+//     return NextResponse.json({ error: 'Gagal menghapus produk' }, { status: 500 });
+//   }
+// }
+
 
 // import { NextResponse } from 'next/server';
 // import { Pool } from 'pg';
@@ -139,3 +312,220 @@ export async function GET(request: Request) {
 //     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
 //   }
 // }
+
+
+import { NextResponse } from 'next/server';
+import { Pool } from 'pg';
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+// GET: Fetch products by category and search
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get('search')?.toLowerCase() ?? '';
+    const category = searchParams.get('category');
+
+    const client = await pool.connect();
+
+    let query = `
+      SELECT
+        p.id,
+        p.name,
+        p.price,
+        p.image,
+        p.description,
+        p.stock,
+        p.status,
+        c.id AS "categoryId",
+        c.name AS category
+      FROM "Product" p
+      JOIN "Category" c ON p."categoryId" = c.id
+      WHERE
+        (LOWER(p.name) LIKE $1 OR CAST(p.id AS TEXT) LIKE $1)
+    `;
+    const values = [`%${search}%`];
+
+    if (category) {
+      query += ` AND c.name = $2`;
+      values.push(category);
+    }
+
+    query += ` ORDER BY p."createdAt" DESC`;
+
+    const result = await client.query(query, values);
+    client.release();
+
+    return NextResponse.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return NextResponse.json({ error: 'Gagal mengambil data produk' }, { status: 500 });
+  }
+}
+
+// POST: Create a new product
+export async function POST(req: Request) {
+  try {
+    const { name, price, image, description, stock, status, categoryId } = await req.json();
+
+    console.log('POST request body:', { name, price, image, description, stock, status, categoryId });
+
+    // Validasi input
+    if (!name || price == null || stock == null || status == null || categoryId == null) {
+      const missingFields = [];
+      if (!name) missingFields.push('name');
+      // Periksa price, stock, dan categoryId agar bukan null/undefined
+      if (price == null) missingFields.push('price');
+      if (stock == null) missingFields.push('stock');
+      if (status == null) missingFields.push('status'); // Tambahkan validasi untuk status
+      if (categoryId == null) missingFields.push('categoryId');
+      return NextResponse.json(
+        { error: `Field berikut harus diisi: ${missingFields.join(', ')}` },
+        { status: 400 }
+      );
+    }
+
+    // Validasi tipe data dan nilai (lebih spesifik dari API transaksi yang tidak ada ini)
+    if (typeof price !== 'number' || price < 0) {
+      return NextResponse.json({ error: 'Harga harus berupa angka positif.' }, { status: 400 });
+    }
+    if (typeof stock !== 'number' || stock < 0) {
+      return NextResponse.json({ error: 'Stok harus berupa angka non-negatif.' }, { status: 400 });
+    }
+    if (typeof categoryId !== 'number' || categoryId <= 0) {
+      return NextResponse.json({ error: 'ID kategori tidak valid.' }, { status: 400 });
+    }
+
+    const client = await pool.connect(); // Ambil koneksi dari pool
+
+    try {
+      // Validate categoryId exists
+      // Sesuaikan nama tabel jika di DB Anda namanya 'categories' (huruf kecil)
+      const categoryCheck = await client.query('SELECT id FROM "Category" WHERE id = $1', [categoryId]);
+      if (categoryCheck.rowCount === 0) {
+        return NextResponse.json({ error: 'Kategori tidak ditemukan' }, { status: 400 });
+      }
+
+      const insertQuery = `
+        INSERT INTO "Product" (name, price, image, description, stock, status, "categoryId")
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *
+      `;
+      const values = [
+        name,
+        price,
+        image || null,         // Menggunakan null jika image kosong
+        description || null,   // Menggunakan null jika description kosong
+        stock,
+        status,
+        categoryId
+      ];
+
+      const result = await client.query(insertQuery, values);
+      return NextResponse.json(result.rows[0], { status: 201 }); // Mengembalikan 201 Created
+    } catch (dbError: any) {
+      // Penanganan error spesifik database (contoh untuk PostgreSQL)
+      if (dbError.code === '23505') { // PostgreSQL unique violation error code
+        return NextResponse.json({ error: 'Nama produk sudah ada, silakan gunakan nama lain.' }, { status: 409 }); // 409 Conflict
+      }
+      throw dbError; // Lempar kembali error jika bukan error spesifik yang ditangani
+    } finally {
+      client.release(); // Penting: Lepaskan client kembali ke pool
+    }
+
+  } catch (error: any) {
+    console.error('Error inserting product:', error);
+    // Error yang tidak ditangani di try-catch internal akan masuk ke sini
+    return NextResponse.json({ error: 'Gagal menambahkan produk: ' + error.message }, { status: 500 });
+  }
+}
+// PUT: Update a product by ID
+export async function PUT(req: Request) {
+  try {
+    const { id, name, price, image, description, stock, status, categoryId } = await req.json();
+
+    console.log('PUT request body:', { id, name, price, image, description, stock, status, categoryId });
+
+    if (!id || !name || !price || !categoryId || stock == null || !status) {
+      const missingFields = [];
+      if (!id) missingFields.push('id');
+      if (!name) missingFields.push('name');
+      if (!price) missingFields.push('price');
+      if (!categoryId) missingFields.push('categoryId');
+      if (stock == null) missingFields.push('stock');
+      if (!status) missingFields.push('status');
+      return NextResponse.json(
+        { error: `Field berikut harus diisi: ${missingFields.join(', ')}` },
+        { status: 400 }
+      );
+    }
+
+    const client = await pool.connect();
+
+    // Validate categoryId exists
+    const categoryCheck = await client.query('SELECT id FROM "Category" WHERE id = $1', [categoryId]);
+    if (categoryCheck.rowCount === 0) {
+      client.release();
+      return NextResponse.json({ error: 'Kategori tidak ditemukan' }, { status: 400 });
+    }
+
+    const updateQuery = `
+      UPDATE "Product"
+      SET name = $1,
+          price = $2,
+          image = $3,
+          description = $4,
+          stock = $5,
+          status = $6,
+          "categoryId" = $7
+      WHERE id = $8
+      RETURNING *
+    `;
+    const values = [name, price, image || null, description || null, stock, status, categoryId, id];
+
+    const result = await client.query(updateQuery, values);
+    client.release();
+
+    if (result.rowCount === 0) {
+      return NextResponse.json({ error: 'Produk tidak ditemukan' }, { status: 404 });
+    }
+
+    return NextResponse.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    return NextResponse.json({ error: 'Gagal mengupdate produk' }, { status: 500 });
+  }
+}
+
+// DELETE: Delete a product by ID
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID produk harus disertakan' }, { status: 400 });
+    }
+
+    const client = await pool.connect();
+
+    const deleteQuery = `
+      DELETE FROM "Product"
+      WHERE id = $1
+      RETURNING *
+    `;
+    const result = await client.query(deleteQuery, [id]);
+    client.release();
+
+    if (result.rowCount === 0) {
+      return NextResponse.json({ error: 'Produk tidak ditemukan' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: 'Produk berhasil dihapus' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    return NextResponse.json({ error: 'Gagal menghapus produk' }, { status: 500 });
+  }
+}

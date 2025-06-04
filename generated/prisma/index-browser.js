@@ -126,8 +126,9 @@ exports.Prisma.ProductScalarFieldEnum = {
   price: 'price',
   image: 'image',
   description: 'description',
-  adminId: 'adminId',
   categoryId: 'categoryId',
+  stock: 'stock',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -192,6 +193,16 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.ProductStatus = exports.$Enums.ProductStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID'
+};
+
 exports.Role = exports.$Enums.Role = {
   admin: 'admin',
   customer: 'customer'

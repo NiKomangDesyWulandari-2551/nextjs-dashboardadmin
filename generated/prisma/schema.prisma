@@ -8,16 +8,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ProductStatus {
+  PENDING
+  PAID
+}
+
 model Product {
   id           Int           @id @default(autoincrement())
   name         String
   price        Int
-  image        String
+  image        String?
   description  String
-  adminId      Int
-  admin        Admin         @relation(fields: [adminId], references: [id])
   categoryId   Int
   category     Category      @relation(fields: [categoryId], references: [id])
+  stock        Int           @default(0) // ➕ jumlah stok
+  status       ProductStatus @default(PAID) // ➕ status produk
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @default(now()) @updatedAt
   invoiceItems InvoiceItem[]
@@ -40,12 +45,11 @@ model Customer {
 }
 
 model Admin {
-  id       Int       @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   name     String
-  username String    @unique
+  username String @unique
   password String
-  role     Role      @default(admin)
-  products Product[]
+  role     Role   @default(admin)
 }
 
 model Invoice {
