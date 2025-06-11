@@ -23,14 +23,14 @@ export default async function CardsServer() {
       totalTransactions,
     } = await fetchCardsData();
 
-    return (
-      <CardsClient
-        totalCustomers={totalCustomers}
-        totalRevenue={totalRevenue}
-        totalProducts={totalProducts}
-        totalTransactions={totalTransactions}
-      />
-    );
+    // return (
+    //   // <CardsClient
+    //   //   totalCustomers={totalCustomers}
+    //   //   totalRevenue={totalRevenue}
+    //   //   totalProducts={totalProducts}
+    //   //   totalTransactions={totalTransactions}
+    //   // />
+    // );
   } catch (error) {
     return (
       <p className="text-center text-red-500 font-serif my-4 text-lg">

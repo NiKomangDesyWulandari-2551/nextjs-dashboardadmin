@@ -329,6 +329,114 @@
 // }
 
 
+// import React from 'react';
+// import {
+//   Users,
+//   DollarSign,
+//   Package,
+//   CreditCard,
+// } from 'lucide-react';
+// import { lacquer, nosifer } from '@/app/ui/font';
+
+// const iconMap = {
+//   collected: DollarSign,
+//   customers: Users,
+//   pending: CreditCard,
+//   invoices: Package,
+// };
+
+// const colorMap = {
+//   collected: 'from-red-700 to-red-900',
+//   customers: 'from-purple-700 to-purple-900',
+//   pending: 'from-orange-700 to-orange-900',
+//   invoices: 'from-green-700 to-green-900',
+// };
+
+// export type CardType = 'invoices' | 'customers' | 'pending' | 'collected';
+
+// interface CardProps {
+//   title: string;
+//   value: number | string;
+//   type: CardType;
+// }
+
+// function Card({ title, value, type }: CardProps) {
+//   const Icon = iconMap[type];
+//   const color = colorMap[type];
+//   const badge = type === 'pending'; // Badge hanya untuk TOTAL TRANSACTIONS (pending)
+
+//   return (
+//     <div className="relative group">
+//       <div className="bg-gradient-to-br from-red-800/60 to-red-900/80 rounded-2xl p-4 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300 hover:shadow-lg transform hover:scale-105">
+//         {badge && (
+//           <div className="absolute -top-2 -right-2 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+//             <div className="w-2 h-2 bg-white rounded-full"></div>
+//           </div>
+//         )}
+        
+//         <div className="flex items-center justify-between mb-2">
+//           <div className={`p-2 rounded-lg bg-gradient-to-r ${color} shadow-md`}>
+//             <Icon className="w-6 h-6 text-white" />
+//           </div>
+//           <div className="text-xl opacity-10">
+//             {/* Ikon tambahan di gambar, diganti dengan teks kosong untuk konsistensi */}
+//           </div>
+//         </div>
+        
+//         <div className="text-center">
+//           <p className={`${nosifer.className} text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-1`}>{value}</p>
+//           <p className={`${lacquer.className} text-sm bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent font-medium tracking-wide mb-2`}>{title}</p>
+//           <div className="flex items-center justify-center text-xs text-green-400">
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// // Fungsi fetching data (tetap sama)
+// async function fetchCardsData() {
+//   console.log('Fetching revenue data...');
+//   await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulasi delay 2 detik
+
+//   const res = await fetch('http://localhost:3000/api/cards', {
+//     cache: 'no-store',
+//   });
+//   if (!res.ok) throw new Error('Gagal memuat data');
+//   return res.json();
+// }
+
+// // Komponen Cards (default export)
+// export default async function Cards() {
+//   try {
+//     const {
+//       totalCustomers,
+//       totalRevenue,
+//       totalProducts,
+//       totalTransactions,
+//     } = await fetchCardsData();
+
+//     return (
+//       <div className="p-8 w-full relative z-0 overflow-hidden">
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+//           <Card title="Total Customers" value={totalCustomers} type="customers" />
+//           <Card title="Total Revenue" value={`${totalRevenue}`} type="collected" />
+//           <Card title="Total Products" value={totalProducts} type="invoices" />
+//           <Card title="Total Transactions" value={totalTransactions} type="pending" />
+//         </div>
+//       </div>
+//     );
+//   } catch (error) {
+//     return (
+//       <p className="text-center text-red-500 font-serif my-4 text-lg">
+//         Data tidak tersedia atau gagal dimuat.
+//       </p>
+//     );
+//   }
+// }
+
+'use client';
+
 import React from 'react';
 import {
   Users,
@@ -363,7 +471,7 @@ interface CardProps {
 function Card({ title, value, type }: CardProps) {
   const Icon = iconMap[type];
   const color = colorMap[type];
-  const badge = type === 'pending'; // Badge hanya untuk TOTAL TRANSACTIONS (pending)
+  const badge = type === 'pending'; // hanya untuk TOTAL TRANSACTIONS
 
   return (
     <div className="relative group">
@@ -378,59 +486,43 @@ function Card({ title, value, type }: CardProps) {
           <div className={`p-2 rounded-lg bg-gradient-to-r ${color} shadow-md`}>
             <Icon className="w-6 h-6 text-white" />
           </div>
-          <div className="text-xl opacity-10">
-            {/* Ikon tambahan di gambar, diganti dengan teks kosong untuk konsistensi */}
-          </div>
+          <div className="text-xl opacity-10"></div>
         </div>
         
         <div className="text-center">
-          <p className={`${nosifer.className} text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-1`}>{value}</p>
-          <p className={`${lacquer.className} text-sm bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent font-medium tracking-wide mb-2`}>{title}</p>
-          <div className="flex items-center justify-center text-xs text-green-400">
-          </div>
+          <p className={`${nosifer.className} text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-1`}>
+            {value}
+          </p>
+          <p className={`${lacquer.className} text-sm bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent font-medium tracking-wide mb-2`}>
+            {title}
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-// Fungsi fetching data (tetap sama)
-async function fetchCardsData() {
-  console.log('Fetching revenue data...');
-  await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulasi delay 2 detik
-
-  const res = await fetch('http://localhost:3000/api/cards', {
-    cache: 'no-store',
-  });
-  if (!res.ok) throw new Error('Gagal memuat data');
-  return res.json();
+interface CardsProps {
+  totalCustomers: number;
+  totalRevenue: number;
+  totalProducts: number;
+  totalTransactions: number;
 }
 
-// Komponen Cards (default export)
-export default async function Cards() {
-  try {
-    const {
-      totalCustomers,
-      totalRevenue,
-      totalProducts,
-      totalTransactions,
-    } = await fetchCardsData();
-
-    return (
-      <div className="p-8 w-full relative z-0 overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card title="Total Customers" value={totalCustomers} type="customers" />
-          <Card title="Total Revenue" value={`${totalRevenue}`} type="collected" />
-          <Card title="Total Products" value={totalProducts} type="invoices" />
-          <Card title="Total Transactions" value={totalTransactions} type="pending" />
-        </div>
+export default function Cards({
+  totalCustomers,
+  totalRevenue,
+  totalProducts,
+  totalTransactions,
+}: CardsProps) {
+  return (
+    <div className="p-8 w-full relative z-0 overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <Card title="Total Customers" value={totalCustomers} type="customers" />
+        <Card title="Total Revenue" value={`${totalRevenue}`} type="collected" />
+        <Card title="Total Products" value={totalProducts} type="invoices" />
+        <Card title="Total Transactions" value={totalTransactions} type="pending" />
       </div>
-    );
-  } catch (error) {
-    return (
-      <p className="text-center text-red-500 font-serif my-4 text-lg">
-        Data tidak tersedia atau gagal dimuat.
-      </p>
-    );
-  }
+    </div>
+  );
 }

@@ -102,7 +102,13 @@ export default async function Page() {
         </div>
         <div className="flex flex-nowrap overflow-x-auto space-x-6 mb-8 pb-4">
           <Suspense fallback={<CardsSkeleton />}>
-            <Cards />
+            <Cards
+              totalCustomers={cardsData.totalCustomers}
+              totalRevenue={cardsData.totalRevenue}
+              totalProducts={cardsData.totalProducts}
+              totalTransactions={cardsData.totalTransactions}
+            />
+
           </Suspense>
         </div>
 
