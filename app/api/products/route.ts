@@ -327,8 +327,34 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get('search')?.toLowerCase() ?? '';
     const category = searchParams.get('category');
+    const page = parseInt(searchParams.get('page') ?? '1', 10);
+    const limit = parseInt(searchParams.get('limit') ?? '5', 10);
 
+    if (isNaN(page) || page < 1) {
+      return NextResponse.json({ error: 'Parameter page tidak valid' }, { status: 400 });
+    }
+    if (isNaN(limit) || limit < 1) {
+      return NextResponse.json({ error: 'Parameter limit tidak valid' }, { status: 400 });
+    }
+
+    const offset = (page - 1) * limit;
     const client = await pool.connect();
+
+    let countQuery = `
+      SELECT COUNT(*) AS total
+      FROM "Product" p
+      JOIN "Category" c ON p."categoryId" = c.id
+      WHERE
+        (LOWER(p.name) LIKE $1 OR CAST(p.id AS TEXT) LIKE $1)
+    `;
+    const countValues = [`%${search}%`];
+    if (category) {
+      countQuery += ` AND c.name = $2`;
+      countValues.push(category);
+    }
+
+    const countResult = await client.query(countQuery, countValues);
+    const total = parseInt(countResult.rows[0].total, 10);
 
     let query = `
       SELECT
@@ -347,18 +373,21 @@ export async function GET(req: Request) {
         (LOWER(p.name) LIKE $1 OR CAST(p.id AS TEXT) LIKE $1)
     `;
     const values = [`%${search}%`];
-
     if (category) {
       query += ` AND c.name = $2`;
       values.push(category);
     }
 
-    query += ` ORDER BY p."createdAt" DESC`;
+    query += ` ORDER BY p."createdAt" DESC LIMIT $${values.length + 1} OFFSET $${values.length + 2}`;
+    values.push(limit.toString(), offset.toString());
 
     const result = await client.query(query, values);
     client.release();
 
-    return NextResponse.json(result.rows);
+    return NextResponse.json({
+      data: result.rows,
+      total,
+    });
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json({ error: 'Gagal mengambil data produk' }, { status: 500 });

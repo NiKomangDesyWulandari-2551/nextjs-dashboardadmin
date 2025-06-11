@@ -68,7 +68,7 @@ export async function GET() {
       FROM "Invoice" i
       JOIN "Customer" c ON i."customerId" = c.id
       ORDER BY i."createdAt" DESC
-      LIMIT 5
+      LIMIT 6
     `;
 
     const result = await client.query<InvoiceResponse>(query);
