@@ -555,6 +555,12 @@ interface Transaction {
   category_name: string;
 }
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+}
+
 const DEFAULT_ITEMS_PER_PAGE = 5;
 
 export default function TransactionPage() {
@@ -578,6 +584,7 @@ export default function TransactionPage() {
   const [buyerName, setBuyerName] = useState('');
   const [totalPrice, setTotalPrice] = useState('');
   const [date, setDate] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Modal edit transaksi
@@ -609,6 +616,47 @@ export default function TransactionPage() {
   // Hitung total halaman
   const totalPages = Math.ceil(totalTransactions / itemsPerPage);
 
+  // Fetch produk dari API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch('/api/products?limit=100');
+        if (!res.ok) {
+          throw new Error('Gagal memuat produk');
+        }
+        const { data } = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error('Fetch products error:', err);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // Autofill totalPrice saat produk dipilih
+  useEffect(() => {
+    if (productId) {
+      const selectedProduct = products.find((p) => p.id === parseInt(productId));
+      if (selectedProduct) {
+        setTotalPrice(selectedProduct.price.toString());
+      }
+    } else {
+      setTotalPrice('');
+    }
+  }, [productId, products]);
+
+  // Autofill editTotalPrice saat editProductId dipilih
+  useEffect(() => {
+    if (editProductId) {
+      const selectedProduct = products.find((p) => p.id === parseInt(editProductId));
+      if (selectedProduct) {
+        setEditTotalPrice(selectedProduct.price.toString());
+      }
+    } else {
+      setEditTotalPrice('');
+    }
+  }, [editProductId, products]);
+
   const fetchTransactions = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -639,7 +687,7 @@ export default function TransactionPage() {
     setCurrentPage(pageParam);
     setItemsPerPage(limitParam);
     fetchTransactions();
-  }, [search, pageParam, limitParam]);
+  }, [search, pageParam, limitParam, fetchTransactions]);
 
   // Update URL saat halaman atau limit berubah
   useEffect(() => {
@@ -647,7 +695,7 @@ export default function TransactionPage() {
     params.set('page', currentPage.toString());
     params.set('limit', itemsPerPage.toString());
     router.push(`?${params.toString()}`, { scroll: false });
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage, itemsPerPage, router, searchParams]);
 
   // Particle effect initialization
   useEffect(() => {
@@ -698,7 +746,7 @@ export default function TransactionPage() {
         throw new Error('Semua kolom harus diisi.');
       }
       const parsedProductId = parseInt(productId);
-      const parsedTotalPrice = parseInt(totalPrice);
+      const parsedTotalPrice = parseFloat(totalPrice);
       if (isNaN(parsedProductId) || parsedProductId <= 0) {
         throw new Error('ID Produk harus berupa angka positif.');
       }
@@ -716,11 +764,11 @@ export default function TransactionPage() {
           productId: parsedProductId,
           buyerName,
           totalPrice: parsedTotalPrice,
-          date,
+          date: new Date(date).toISOString(), // Format ke ISO
         }),
       });
 
-      if (!res.ok) {
+      if (! res.ok) {
         const { error } = await res.json();
         throw new Error(error || 'Gagal menambahkan transaksi');
       }
@@ -760,7 +808,7 @@ export default function TransactionPage() {
         throw new Error('Semua kolom harus diisi.');
       }
       const parsedProductId = parseInt(editProductId);
-      const parsedTotalPrice = parseInt(editTotalPrice);
+      const parsedTotalPrice = parseFloat(editTotalPrice);
       if (isNaN(parsedProductId) || parsedProductId <= 0) {
         throw new Error('ID Produk harus berupa angka positif.');
       }
@@ -920,43 +968,74 @@ export default function TransactionPage() {
               </button>
               <h2 className="text-orange-400 text-2xl font-extrabold mb-6 drop-shadow-lg">Form Tambah Transaksi</h2>
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <input
-                  type="number"
-                  placeholder="ID Produk"
-                  value={productId}
-                  onChange={(e) => setProductId(e.target.value)}
-                  required
-                  min="1"
-                  className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  aria-label="ID Produk"
-                />
-                <input
-                  type="text"
-                  placeholder="Nama Pembeli"
-                  value={buyerName}
-                  onChange={(e) => setBuyerName(e.target.value)}
-                  required
-                  className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  aria-label="Nama Pembeli"
-                />
-                <input
-                  type="number"
-                  placeholder="Total Harga"
-                  value={totalPrice}
-                  onChange={(e) => setTotalPrice(e.target.value)}
-                  required
-                  min="0"
-                  className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  aria-label="Total Harga"
-                />
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                  className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  aria-label="Tanggal Transaksi"
-                />
+                <div>
+                  <label htmlFor="productId" className="block text-orange-200 mb-1 font-semibold">
+                    Produk
+                  </label>
+                  <select
+                    id="productId"
+                    value={productId}
+                    onChange={(e) => setProductId(e.target.value)}
+                    required
+                    className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+                    aria-label="Pilih Produk"
+                  >
+                    <option value="" disabled>
+                      Pilih Produk
+                    </option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.id} - {product.name} (Rp {product.price.toLocaleString()})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="buyerName" className="block text-orange-200 mb-1 font-semibold">
+                    Nama Pembeli
+                  </label>
+                  <input
+                    id="buyerName"
+                    type="text"
+                    placeholder="Nama Pembeli"
+                    value={buyerName}
+                    onChange={(e) => setBuyerName(e.target.value)}
+                    required
+                    className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+                    aria-label="Nama Pembeli"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="totalPrice" className="block text-orange-200 mb-1 font-semibold">
+                    Total Harga
+                  </label>
+                  <input
+                    id="totalPrice"
+                    type="number"
+                    placeholder="Total Harga"
+                    value={totalPrice}
+                    onChange={(e) => setTotalPrice(e.target.value)}
+                    required
+                    min="0"
+                    step="0.01"
+                    className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+                    aria-label="Total Harga"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="date" className="block text-orange-200 mb-1 font-semibold">
+                    Tanggal
+                  </label>
+                  <input
+                    id="date"
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    required
+                    className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+                    aria-label="Tanggal Transaksi"
+                  />
+                </div>
                 <div className="col-span-1 md:col-span-2">
                   <button
                     type="submit"
@@ -994,35 +1073,60 @@ export default function TransactionPage() {
               </button>
               <h2 className="text-orange-400 text-2xl font-extrabold mb-6 drop-shadow-lg">Form Edit Transaksi</h2>
               <form onSubmit={handleEditSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <input
-                  type="number"
-                  placeholder="ID Produk"
-                  value={editProductId}
-                  onChange={(e) => setEditProductId(e.target.value)}
-                  required
-                  min="1"
-                  className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  aria-label="ID Produk"
-                />
-                <input
-                  type="text"
-                  placeholder="Nama Pembeli"
-                  value={editBuyerName}
-                  onChange={(e) => setEditBuyerName(e.target.value)}
-                  required
-                  className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  aria-label="Nama Pembeli"
-                />
-                <input
-                  type="number"
-                  placeholder="Total Harga"
-                  value={editTotalPrice}
-                  onChange={(e) => setEditTotalPrice(e.target.value)}
-                  required
-                  min="0"
-                  className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  aria-label="Total Harga"
-                />
+                <div>
+                  <label htmlFor="editProductId" className="block text-orange-200 mb-1 font-semibold">
+                    Produk
+                  </label>
+                  <select
+                    id="editProductId"
+                    value={editProductId}
+                    onChange={(e) => setEditProductId(e.target.value)}
+                    required
+                    className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+                    aria-label="Pilih Produk"
+                  >
+                    <option value="" disabled>
+                      Pilih Produk
+                    </option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.id} - {product.name} (Rp {product.price.toLocaleString()})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="editBuyerName" className="block text-orange-200 mb-1 font-semibold">
+                    Nama Pembeli
+                  </label>
+                  <input
+                    id="editBuyerName"
+                    type="text"
+                    placeholder="Nama Pembeli"
+                    value={editBuyerName}
+                    onChange={(e) => setEditBuyerName(e.target.value)}
+                    required
+                    className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+                    aria-label="Nama Pembeli"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="editTotalPrice" className="block text-orange-200 mb-1 font-semibold">
+                    Total Harga
+                  </label>
+                  <input
+                    id="editTotalPrice"
+                    type="number"
+                    placeholder="Total Harga"
+                    value={editTotalPrice}
+                    onChange={(e) => setEditTotalPrice(e.target.value)}
+                    required
+                    min="0"
+                    step="0.01"
+                    className="px-4 py-3 rounded-lg bg-black text-white border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+                    aria-label="Total Harga"
+                  />
+                </div>
                 <div className="col-span-1 md:col-span-2">
                   <button
                     type="submit"
@@ -1224,7 +1328,7 @@ export default function TransactionPage() {
               className={`px-4 py-2 rounded-lg font-bold ${
                 currentPage === 1
                   ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                  : 'bg-[#800020] hover:bg-[#800020]/70 text-orange-300 border border-orange-400'
+                  : 'bg-[#800020] hover:bg-[#800020]/70 text-orange-600 border border-orange-400'
               }`}
               aria-label="Halaman sebelumnya"
             >
@@ -1237,7 +1341,7 @@ export default function TransactionPage() {
                 className={`px-4 py-2 rounded-lg font-bold ${
                   currentPage === page
                     ? 'bg-orange-500 text-white'
-                    : 'bg-[#800020] hover:bg-[#800020]/70 text-orange-300 border border-orange-400'
+                    : 'bg-[#800020] hover:bg-[#800020]/70 text-orange-600 border border-orange-400'
                 }`}
                 aria-label={`Halaman ${page}`}
               >
@@ -1250,7 +1354,7 @@ export default function TransactionPage() {
               className={`px-4 py-2 rounded-lg font-bold ${
                 currentPage === totalPages
                   ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                  : 'bg-[#800020] hover:bg-[#800020]/70 text-orange-300 border border-orange-400'
+                  : 'bg-[#800020] hover:bg-[#800020]/70 text-orange-600 border border-orange-400'
               }`}
               aria-label="Halaman berikutnya"
             >
@@ -1262,6 +1366,7 @@ export default function TransactionPage() {
     </>
   );
 }
+
 // 'use client';
 
 // import { useEffect, useState, useCallback } from 'react';
