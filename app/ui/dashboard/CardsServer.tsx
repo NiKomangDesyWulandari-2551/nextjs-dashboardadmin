@@ -24,12 +24,12 @@ export default async function CardsServer() {
     } = await fetchCardsData();
 
     // return (
-    //   // <CardsClient
-    //   //   totalCustomers={totalCustomers}
-    //   //   totalRevenue={totalRevenue}
-    //   //   totalProducts={totalProducts}
-    //   //   totalTransactions={totalTransactions}
-    //   // />
+    // <CardsClient
+    //   totalCustomers={totalCustomers}
+    //   totalRevenue={totalRevenue}
+    //   totalProducts={totalProducts}
+    //   totalTransactions={totalTransactions}
+    // />
     // );
   } catch (error) {
     return (
