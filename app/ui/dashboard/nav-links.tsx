@@ -1,13 +1,13 @@
 'use client';
-import { FaUtensils, FaCocktail, FaMoneyBillWave } from "react-icons/fa";
+import { FaUtensils, FaCocktail, FaMoneyBillWave, FaHome } from "react-icons/fa"; // Added FaHome for dashboard
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 const links = [
-  { href: "/dashboard/foods", icon: FaUtensils },
-  { href: "/dashboard/drinks", icon: FaCocktail },
-  { href: "/dashboard/transaksi", icon: FaMoneyBillWave }, // <--- ini dia tambahan ikon uang
+  { href: "/dashboard/foods", icon: FaUtensils, title: "Foods" },
+  { href: "/dashboard/drinks", icon: FaCocktail, title: "Drinks" },
+  { href: "/dashboard/transaksi", icon: FaMoneyBillWave, title: "Transaksi" },
 ];
 
 export default function NavLinks() {
@@ -20,10 +20,11 @@ export default function NavLinks() {
           <Link
             key={link.href}
             href={link.href}
+            title={link.title}
             className={clsx(
               "flex h-[48px] grow items-center justify-center gap-2 rounded-full bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3",
               {
-                "bg-sky-100 text-blue-600": pathname.startsWith(link.href),
+                "bg-sky-100 text-blue-600": pathname === link.href || (link.href !== "/dashboard" && pathname.startsWith(link.href)),
               }
             )}
           >

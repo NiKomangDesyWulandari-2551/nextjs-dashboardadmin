@@ -59,7 +59,6 @@
 
 // }
 
-
 import React, { Suspense } from 'react';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 import LatestInvoices from '@/app/ui/dashboard/latest-invoices';

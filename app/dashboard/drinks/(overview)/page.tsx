@@ -1188,8 +1188,8 @@ export default function DrinkPage() {
               onChange={(e) => {
                 const file = e.target.files && e.target.files[0]; // Periksa apakah files tersedia
                 if (file) {
-                  const imageUrl = URL.createObjectURL(file); // Buat URL sementara untuk pratinjau
-                  setEditImage(imageUrl); 
+                  // const imageUrl = URL.createObjectURL(file); // Buat URL sementara untuk pratinjau
+                  // setEditImage(imageUrl); 
                 } else {
                   console.log("Tidak ada file yang dipilih");
                   setEditImage(""); 
