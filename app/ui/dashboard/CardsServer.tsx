@@ -1,7 +1,7 @@
 // CardsServer.tsx (Server Component - no 'use client')
 import React from 'react';
 import Card from '@/app/ui/dashboard/cards'; // asumsi Card tetap 'use client'
-import { Nosifer } from '@/app/ui/font';
+import { nosifer } from '@/app/ui/font';
 
 async function fetchCardsData() {
   console.log('Fetching revenue data...');
