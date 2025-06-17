@@ -2,16 +2,13 @@ import { NextResponse } from 'next/server';
 import { Pool } from 'pg';
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL, // Pastikan ini diatur di .env
 });
 
 export async function POST(request: Request) {
-  try {
-    const { username, password } = await request.json();
-    if (!username || !password) {
-      return NextResponse.json({ success: false, message: 'Missing username or password' }, { status: 400 });
-    }
+  const { username, password } = await request.json();
 
+  try {
     const result = await pool.query(
       'SELECT * FROM "Admin" WHERE username = $1 AND password = $2',
       [username, password]
