@@ -8,6 +8,9 @@ Deskripsi Singkat:
 
 Website ini dirancang dengan tema horor yang mengarah pada suasana Halloween. Elemen visual seperti ikon labu digunakan untuk memperkuat kesan menyeramkan. Kontennya menampilkan berbagai snack dan minuman bertema horor yang menjadi ciri khas dari konsep kafe yang diangkat.
 
+username admin: admin123
+password: 12345
+
 Link Github:
 - https://github.com/lunana2525/nextjs-dashboard.git (Admin)
 - https://github.com/NiKomangDesyWulandari-2551/nextjs-dashboardadmin.git  (Admin)
